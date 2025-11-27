@@ -14,7 +14,7 @@
         \shortintertext{Consider two stationary clocks in the Schwarzschild geometry, located at fixed radii $r_1$ and $r_2$}
         x_1^𝜇(𝜏1) &= ( c\,t_1(𝜏_1),r_1,𝜃_0,𝜑_0 )  \\
         x_2^𝜇(𝜏2) &= ( c\,t_2(𝜏_2),r_2,𝜃_0,𝜑_0)  \\
-        \shortintertext{previously  for $B(r)$ from \eqref{eq:dt_dtau_B} gives}
+        \shortintertext{using previously computed $B(r)$ gives}
         \dv{(ct)}{𝜏} &= c\,\sqrt{\recip{1 - \frac{2\,G\,M}{c^2\,r}} }  \\
         \shortintertext{ the rate of change of coordinate time with respect to proper time }
         \dv{t}{𝜏} &= \recip{\sqrt{1 - \frac{2\,G\,M}{c^2\,r}} }    \\
@@ -27,13 +27,13 @@
         &= \dot{𝜏}\,\Big|_{t_0}^{t_0 + 𝛥t} \\
         &= \dot{𝜏}\,𝛥t
         \shortintertext{Compute the difference in elapsed proper times between two radii}
-        𝛥𝜏_{12} &\equiv 𝛥𝜏_1 - 𝛥𝜏_2                \\
-        &= \dot{𝜏}_1\,𝛥t - \dot{𝜏}_2\,𝛥t   \\
-        &= (\dot{𝜏}_1 - \dot{𝜏}_2)\,𝛥t     \\
-        &= (\dot{𝜏}_1 - \dot{𝜏}_2)\,\frac{𝛥𝜏_2}{\dot{𝜏}_2}    \\
-        &= \qty(\frac{\dot{𝜏}_1}{\dot{𝜏}_2} - 1)\,𝛥𝜏_2 \\
-        &= \qty(\frac{ \sqrt{1 - \frac{2\,G\,M}{c^2\,r_1}} }{ \sqrt{1 - \frac{2\,G\,M}{c^2\,r_2}}} - 1  )\,𝛥𝜏_2 \\
-        &= \qty(\sqrt{ \frac{1 - \frac{2\,G\,M}{c^2\,r_1}} { 1 - \frac{2\,G\,M}{c^2\,r_2}} } - 1)\,𝛥𝜏_2 \\
+        𝛥𝜏_{21} &\equiv 𝛥𝜏_2 - 𝛥𝜏_1                \\
+        &= \dot{𝜏}_2\,𝛥t - \dot{𝜏}_1\,𝛥t   \\
+        &= (\dot{𝜏}_2 - \dot{𝜏}_1)\,𝛥t     \\
+        &= (\dot{𝜏}_2 - \dot{𝜏}_1)\,\frac{𝛥𝜏_1}{\dot{𝜏}_1}    \\
+        &= \qty(\frac{\dot{𝜏}_2}{\dot{𝜏}_1} - 1)\,𝛥𝜏_1 \\
+        &= \qty(\frac{ \sqrt{1 - \frac{2\,G\,M}{c^2\,r_2}} }{ \sqrt{1 - \frac{2\,G\,M}{c^2\,r_1}}} - 1  )\,𝛥𝜏_1 \\
+        &= \qty(\sqrt{ \frac{1 - \frac{2\,G\,M}{c^2\,r_2}} { 1 - \frac{2\,G\,M}{c^2\,r_1}} } - 1)\,𝛥𝜏_1 \\
     \end{align}
 
     \begin{luacode*}
@@ -71,31 +71,31 @@
         r_s_sun =  schwarzschildRadius(mSun)
 
 
-        -- Compute Δτ_{12} = ( τdot2 / τdot1 - 1) * Δτ2
-        function deltaTau12(tauDot1, tauDot2, deltaTau2)
-            return (tauDot1 / tauDot2 - 1) * deltaTau2
+        -- Compute Δτ_{21} = ( τdot2 / τdot1 - 1) * Δτ1
+        function deltaTau21(tauDot2, tauDot1, deltaTau1)
+            return (tauDot2 / tauDot1 - 1) * deltaTau1
         end
 
 
-    function printAltitudeTableRows(mass, r2, radii, offset, scale)
+    function printAltitudeTableRows(mass, r1, radii, offset, scale)
 
-        local tauDot2      = tauDotStationary(mass, r2)
-        local deltaTau2Day  = 86400
-        local deltaTau2Year = 365.25 * deltaTau2Day
+        local tauDot1      = tauDotStationary(mass, r1)
+        local deltaTau1Day  = 86400
+        local deltaTau1Year = 365.25 * deltaTau1Day
 
 
         for _, loc in ipairs(radii) do
-            local name, r1 = loc.name, loc.radius
+            local name, r2 = loc.name, loc.radius
 
-            local elev = (r1 - offset) / scale
-            --local r1         = r2 + elev
-            local tauDot1    = tauDotStationary(mass, r1)
+            local elev = (r2 - offset) / scale
+            --local r2         = r1 + elev
+            local tauDot2    = tauDotStationary(mass, r2)
 
             tex.print(string.format(
                 "%s & %s & %.16f & ",
                 name,
                 commas(elev),
-                tauDot1
+                tauDot2
             ))
 
             if r1 == r2 then
@@ -103,27 +103,27 @@
                 tex.print(" &   \\\\")
             else
 
-                local dTau12_day  = deltaTau12(tauDot1, tauDot2, deltaTau2Day)
-                local dTau12_year = deltaTau12(tauDot1, tauDot2, deltaTau2Year)
+                local dTau21_day  = deltaTau21(tauDot2, tauDot1, deltaTau1Day)
+                local dTau21_year = deltaTau21(tauDot2, tauDot1, deltaTau1Year)
 
                 tex.print(string.format(
                     "%s & %s \\\\",
-                    formatSecondsAuto(dTau12_day),
-                    formatSecondsAuto(dTau12_year)
+                    formatSecondsAuto(dTau21_day),
+                    formatSecondsAuto(dTau21_year)
                 ))
             end
         end
 
         -- Infinity row
-        local tauDot1    = 1.0
-        local dTau12_day_inf  = deltaTau12(tauDot1, tauDot2, deltaTau2Day)
-        local dTau12_year_inf = deltaTau12(tauDot1, tauDot2, deltaTau2Year)
+        local tauDot2    = 1.0
+        local dTau21_day_inf  = deltaTau21(tauDot2, tauDot1, deltaTau1Day)
+        local dTau21_year_inf = deltaTau21(tauDot2, tauDot1, deltaTau1Year)
 
         tex.print(string.format(
             "Infinity & $\\infty$ & %.16f & %s & %s \\\\",
             tauDot1,
-            formatSecondsAuto(dTau12_day_inf),
-            formatSecondsAuto(dTau12_year_inf)
+            formatSecondsAuto(dTau21_day_inf),
+            formatSecondsAuto(dTau21_year_inf)
         ))
     end
 
@@ -144,7 +144,7 @@
            R("Moon Orbit", 3.844e8),
         }
 
-        printAltitudeTableRows(mEarth,rEarth, locations, rEarth, 1)
+        printAltitudeTableRows(mEarth, rEarth, locations, rEarth, 1)
     end
 
     function sunTimeDilationRows()
@@ -178,14 +178,18 @@
     This would be the radius of the event horizon of a black hole with the mass of earth.
 
 
+    The following table shows the gravitational time dilation caused by the earth relative to a clock at sea level ($r_1$)
+    These do not take into account the time dilation caused by the velocity of the clocks.
+    It's as if the clocks are "hovering" at the given altitude.
+    The next section will account for the velocity of the clocks.
 
     \begin{table}[h!]
         \centering
-        \caption{Earth Gravitational time dilation relative to Sea Level $(r_2)$.}
+        \caption{Earth Gravitational time dilation relative to Sea Level $(r_1$.}
         \begin{tabular}{l r r r r }
             \toprule
-            &                             &                       & \bold{$𝛥𝜏_2$ (1 day)} &  \bold{$𝛥𝜏_2$ (1 year)} \\
-            \bold{Name} & \bold{$r_1$ = Altitude (m)} & \bold{$\dot{\tau}_1$} &      \bold{$𝛥𝜏_{12}$} &        \bold{$𝛥𝜏_{12}$} \\
+            &                             &                       & \bold{$𝛥𝜏_1$ (1 day)} &  \bold{$𝛥𝜏_1$ (1 year)} \\
+            \bold{Name} & \bold{$r_2$ = Altitude (m)} & \bold{$\dot{\tau}_2$} &      \bold{$𝛥𝜏_{21}$} &        \bold{$𝛥𝜏_{21}$} \\
             \midrule
             \directlua{earthTimeDilationRows()}
             \bottomrule
@@ -197,13 +201,15 @@
         R_☉ = \frac{2\,G\,M_☉}{c^2} = \directlua{print_km(r_s_sun)}.
     \]
 
+    This table show the time dilation caused by the sun relative to a clock "hovering" at the radius of the earth's orbit $(r_1)$.
+
     \begin{table}[h!]
         \centering
-        \caption{Sun Gravitational time dilation relative to Earth  Orbit $(r_2)$.}
+        \caption{Sun Gravitational time dilation relative to Earth  Orbit $(r_1)$.}
         \begin{tabular}{l r r r r }
             \toprule
-            &                            &                       & \bold{$𝛥𝜏_2$ (1 day)} &  \bold{$𝛥𝜏_2$ (1 year)} \\
-            \bold{Name} & \bold{$r_1$ = Radius (km)} & \bold{$\dot{\tau}_1$} &      \bold{$𝛥𝜏_{12}$} &        \bold{$𝛥𝜏_{12}$} \\
+            &                            &                       & \bold{$𝛥𝜏_1$ (1 day)} &  \bold{$𝛥𝜏_1$ (1 year)} \\
+            \bold{Name} & \bold{$r_2$ = Radius (km)} & \bold{$\dot{\tau}_2$} &      \bold{$𝛥𝜏_{21}$} &        \bold{$𝛥𝜏_{21}$} \\
             \midrule
             \directlua{sunTimeDilationRows()}
             \bottomrule
