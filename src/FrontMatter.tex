@@ -9,7 +9,7 @@
         \vspace{1.5cm}
         {\huge Brad Garn\par}
         \vspace{0.5cm}
-        {\large2025\par}
+        {\large\today\par}
         \vfill
     \end{titlepage}
 
@@ -56,7 +56,20 @@
     \vfill
     \begin{center}
         \small
-        PDF: bradgarn.com/GR.pdf\\
-        Source: github.com/bradhg/GR
+        PDF: \href{https://BradGarn.com/GR.pdf}{BradGarn.com/GR.pdf}\\
+        Source: \href{https://github.com/bradhg/GR}{github.com/bradhg/GR}\\
+        \begin{luacode*}
+        -- print current git SHA
+        local f = io.popen("git describe --always --dirty --abbrev=7 2>nul")
+
+        if f then
+            local line = f:read("*l")
+            f:close()
+            if line and line ~= "" then
+                tex.print("Git SHA: "..line)
+            end
+        end
+        \end{luacode*}
+
     \end{center}
 \end{document}
