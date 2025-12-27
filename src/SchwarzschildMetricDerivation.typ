@@ -1,728 +1,744 @@
-\documentclass[GR.tex]{subfiles}
+//
+// Copyright 2025 Brad Garn
+//
+#import "utils.typ" : *
 
-\begin{document}
+#pagebreak()
+= The Schwarzschild Metric Derivation
 
-    \newpage
-    \section{The Schwarzschild Metric Derivation}
-
-    \subsection{The metric and it inverse}
+== The metric and it inverse
 
     The Schwarzschild Metric is for the empty space near a spherically symmetric non-rotating chargeless mass.
-    The coordinates are $x^𝜇 = (ct,\,r,\,𝜃,\,𝜑)$.
-    We will begin with the standard ansatz for the Schwarzschild metric when $A$ and $B$ are unknow functions of $r$.
+    The coordinates are $x^𝜇 = (c t,r,𝜃,𝜑)$.
+    We will begin with the standard ansatz for the Schwarzschild metric where $A$ and $B$ are unknow functions of $r$.
     The other two non-zero terms in the metric are determined by requiring spherical symmetry.
-    Being static makes all $g_{ti}$ and $g_{it}$ terms equal zero.
-    Spherical symmetry requires all $g_{r𝜃} \text{, } g_{r𝜑} \text{, and } g_{𝜃𝜑}$ terms to be zero.
+    Being static makes all $g_(t i)$ and $g_(i t)$ terms equal zero.
+    Spherical symmetry requires all $g_(r 𝜃)$, $g_(r 𝜑)$, and $g_(𝜃 𝜑)$ terms to be zero.
 
-    \[
-        g_{𝜇𝜈} =
-        \begin{bmatrix}
-            A & 0 & 0   & 0           \\
-            0 & B & 0   & 0           \\
-            0 & 0 & r^2 & 0           \\
-            0 & 0 & 0   & r^2\,\sin^2𝜃
-        \end{bmatrix}
-    \]
+    $ g_(μ ν) = diag4( A, B, r^2, r^2 sin^2 𝜃 ) $
 
     Because the metric is diagonal the inverse metric is simply the reciprocal of each element.
-    \[
-        g^{𝜇𝜈} =
-        \begin{bmatrix}
-            \recip{A} & 0         & 0           & 0           \\
-            0         & \recip{B} & 0           & 0           \\
-            0         & 0         & \recip{r^2} & 0           \\
-            0         & 0         & 0           & \recip{r^2\,\sin^2𝜃}
-        \end{bmatrix}
-    \]
+    $ g^(μ ν) = mat(
+       1/A,   0, 0,     0;
+         0, 1/B, 0,     0;
+         0,   0, 1/r^2, 0;
+         0,   0, 0,     1/(r^2 sin^2 θ )
+    ) $
 
-    \subsection{The Partial Derivatives}
+== The Partial Derivatives
 
-    \begin{align*}
-        \pg{rtt} &= A' \\
-        \pg{rrr} &= B' \\
-        \pg{r𝜃𝜃} &= 2r \\
-        \pg{r𝜑𝜑} &= 2r\,\sin^2𝜃 \\
-        \pg{𝜃𝜑𝜑} &= 2r^2\,\sin𝜃\,\cos𝜃 \\
-        others &= 0
-    \end{align*}
+    $
+        pg(r,t,t) &= A' \
+        pg(r,r,r) &= B' \
+        pg(r,𝜃,𝜃) &= 2r \
+        pg(r,𝜑,𝜑) &= 2r sin^2 𝜃 \
+        pg(𝜃,𝜑,𝜑) &= 2r^2 sin 𝜃 cos 𝜃 \
+        "others" &= 0
+    $
 
-    \subsection{The Christoffel Symbols}
-    Because the metric is diagonal the Christoffel Symbols equations simplifies to the following:
+== The Christoffel Symbols
+    
+    Because this metric is diagonal the Christoffel Symbols equations simplifies to the following:
 
-    \[
-        𝛤^𝜌_{𝜇𝜈} = ½ g^{𝜌𝜌} \left( \pg{𝜇𝜈𝜌} + \pg{𝜈𝜇𝜌} - \pg{𝜌𝜇𝜈} \right) \qquad \text{(no sum on $𝜌$)}
-    \]
+    #eqNote[$ 𝛤^𝜌_(𝜇 𝜈) = 1/2 g^(𝜌 𝜌) ( pg(𝜇,𝜈,𝜌) + pg(𝜈,𝜇,𝜌) - pg(𝜌,𝜇,𝜈) ) $][no sum on $𝜌$]
 
     With three indexes in 4d spacetime there are 64 Christoffel Symbols.
     But they are symmetric in the lower index so that leaves only 40.
     And because there are only 5 partial derivatives of the metric that are non-zero only the following Christoffel Symbols are non-zero.
 
+    $
+    𝛤^t_(t r) = 𝛤^t_(r t)  & = 1/2 g^(t t) lr2( pgz(t,r,t) + pg(r,t,t) - pgz(t,t,r) ) && = A'/(2A) \
+    𝛤^r_(t t)              & = 1/2 g^(r r) lr2( pgz(t,t,r) + pgz(t,t,r) - pg(r,t,t) ) && = (-A')/(2B) \
+    𝛤^r_(r r)              & = 1/2 g^(r r) lr2( pg(r,r,r) + pg(r,r,r) - pg(r,r,r)  ) && = B'/(2B) \
+    𝛤^r_(𝜃 𝜃)              & = 1/2 g^(r r) lr2( pgz(𝜃,𝜃,r) + pgz(𝜃,𝜃,r) - pg(r,𝜃,𝜃) ) &&= (-2r)/(2B) = (-r)/B \
+    𝛤^r_(𝜑  𝜑)            & = 1/2 g^(r r) lr2( pgz(𝜑,𝜑,r) + pgz(𝜑,𝜑,r) - pg(r,𝜑,𝜑) ) &&= (-2r sin^2 𝜃)/(2B) = (-r sin^2 𝜃)/(B) \
+    𝛤^𝜃_(𝜃 r) = 𝛤^𝜃_(r 𝜃)  & = 1/2 g^(𝜃 𝜃) lr2( pgz(𝜃,r,𝜃) + pg(r,𝜃,𝜃) - pgz(𝜃,𝜃,r) ) &&= (2r)/(2r^2) = 1/r \
+    𝛤^𝜃_(𝜑 𝜑)             & = 1/2 g^(𝜃 𝜃) lr2( pgz(𝜑,𝜑,𝜃) + pgz(𝜑,𝜑,𝜃) - pg(𝜃,𝜑,𝜑) ) &&= (-2r^2 sin 𝜃 cos 𝜃)/(2 r^2) = -sin 𝜃 cos 𝜃 \
+    𝛤^𝜑_(𝜑 r) = 𝛤^𝜑_(r 𝜑) & = 1/2 g^(𝜑 𝜑) lr2( pgz(𝜑,r,𝜑) + pg(r,𝜑,𝜑) - pgz(𝜑,𝜑,r) ) &&= (2r sin^2 𝜃)/(2 r^2 sin^2 𝜃) = 1/r \
+    𝛤^𝜑_(𝜑 𝜃) = 𝛤^𝜑_(𝜃 𝜑) & = 1/2 g^(𝜑 𝜑) lr2( pgz(𝜑,𝜃,𝜑) + pg(𝜃,𝜑,𝜑) - pgz(𝜑,𝜑,𝜃) ) &&= (2r^2 sin 𝜃 cos 𝜃)/(2 r^2 sin^2 𝜃) = cot 𝜃 \
+    $
 
-    \begin{alignat*}{2}
-        𝛤^t_{tr} = 𝛤^t_{rt} & = ½ g^{tt}\,\left( \pgz{trt} +         \pg {rtt} - \pgz{ttr}  \right) & & = \frac{ A'}{2A}                \\
-        𝛤^r_{tt}            & = ½ g^{rr}\,\left( \pgz{ttr} +         \pgz{ttr} - \pg {rtt}  \right) & & = \frac{-A'}{2B}                \\
-        𝛤^r_{rr}            & = ½ g^{rr}\,\left( \pg {rrr} + \cancelto{0}{\pg {rrr} - \pg {rrr}} \right) & & = \frac{ B'}{2B}           \\
-        𝛤^r_{𝜃𝜃}            & = ½ g^{rr}\,\left( \pgz{𝜃𝜃r} +         \pgz{𝜃𝜃r} - \pg{r𝜃𝜃}    \right) & &= \frac{-2r}{2B} = \frac{-r}{B}  \\
-        𝛤^r_{𝜑𝜑}            & = ½ g^{rr}\,\left( \pgz{𝜑𝜑r} +        \pgz{𝜑𝜑r} - \pg{r𝜑𝜑}    \right) & &= \frac{-2r\,\sin^2𝜃}{2B} = \frac{-r\,\sin^2𝜃}{B}  \\
-        𝛤^𝜃_{𝜃r} = 𝛤^𝜃_{r𝜃} & = ½ g^{𝜃𝜃}\,\left( \pgz{𝜃r𝜃} +         \pg {r𝜃𝜃} - \pgz{𝜃𝜃r}   \right) & &= \frac{2r}{2r^2} = \recip{r}    \\
-        𝛤^𝜃_{𝜑𝜑}            & = ½ g^{𝜃𝜃}\,\left( \pgz{𝜑𝜑𝜃} +        \pgz{𝜑𝜑𝜃} - \pg{𝜃𝜑𝜑}    \right) & &= \frac{-2r^2\,\sin𝜃\,\cos𝜃}{2 r^2} = -\sin𝜃\,\cos𝜃\\
-        𝛤^𝜑_{𝜑r} = 𝛤^𝜑_{r𝜑} & = ½ g^{𝜑𝜑}\,\left( \pgz{𝜑r𝜑} +        \pg {r𝜑𝜑} - \pgz{𝜑𝜑r}   \right) & &= \frac{2r\,\sin^2𝜃}{2 r^2\,\sin^2𝜃} = \recip{r}  \\
-        𝛤^𝜑_{𝜑𝜃} = 𝛤^𝜑_{𝜃𝜑} & = ½ g^{𝜑𝜑}\,\left( \pgz{𝜑𝜃𝜑} +        \pg {𝜃𝜑𝜑} - \pgz{𝜑𝜑𝜃}   \right) & &= \frac{2r^2\,\sin𝜃\,\cos𝜃}{2 r^2\,\sin^2𝜃} = \cot𝜃 \\
-    \end{alignat*}
+== The Ricci Tensor
 
-    \subsection{The Ricci Tensor}
+=== $R_(t t)$ Component of the Ricci Tensor
 
-    \subsubsection{$R_{tt}$ Component of the Ricci Tensor}
-    \[
-        R_{tt} = ∂_{\O𝜆} 𝛤^{\O𝜆}_{tt} - ∂_{t} 𝛤^{\O𝜆}_{t\O𝜆} + 𝛤^{\O𝜆}_{tt} 𝛤^{\G𝜌}_{\O𝜆\G𝜌} - 𝛤^{\O𝜆}_{t\G𝜌} 𝛤^{\G𝜌}_{\O𝜆t}
-    \]
+    #let O𝜆 = Orange[𝜆]
+    #let G𝜌 = Green[𝜌]
 
-    \paragraph{$R_{tt}$ First Term} Only the partial with respect to $r$ will be non-zero{
+    $ R_(t t) = pd(O𝜆, 𝛤^(O𝜆)_(t t)) - pd(t, 𝛤^(O𝜆)_(t O𝜆)) + 𝛤^(O𝜆)_(t t) 𝛤^(G𝜌)_(O𝜆 G𝜌) - 𝛤^(O𝜆)_(t G𝜌) 𝛤^(G𝜌)_(O𝜆 t) $
 
-                        % Ricci tt Initial-term
-        \NewDocumentCommand{\RttI}{m}{\ensuremath{          ∂_{\O#1}\,𝛤^{\O#1}_{tt} }}
-        \NewDocumentCommand{\RttIc}{m}{\ensuremath{\cancelto{0}{ ∂_{\O#1}\,𝛤^{\O#1}_{tt} }}}
-
-        \begin{align*}
-            \RttI{𝜆} &= \RttIc{t} + \RttI{r} + \RttIc{𝜃} + \RttIc{𝜑} \\
-            &= ∂_r\,\frac{-A'}{2B} \\
-            &= \frac{(-2B')(-A') + (-A'')(2B)}{4B^2} \\
-            &= \frac{A'B'}{2B^2} - \frac{A''}{2B} \\
-        \end{align*}
+    *$R_(t t)$ First Term* Only the partial with respect to $r$ will be non-zero #{
+        
+        let (Rtt1m, Rtt1h, Rtt1c) = makeVariants1( (index) => $ pd(index, 𝛤^(index)_(t t)) $)
+        $
+        Rtt1m(𝜆) &= Rtt1c(t) + Rtt1h(r) + Rtt1c(𝜃) + Rtt1c(𝜑) \
+                 &= pd(r, (-A')/(2B))   \
+                 &= ((-2B')(-A') + (-A'')(2B))/(4B^2) \
+                 &= (A'B')/(2B^2) - (A'')/(2B)
+        $
     }
 
-    \paragraph{$R_{tt}$ Second Term} All partials with respect to $t$ are zero. \nopagebreak[4]{
+    *$R_(t t)$ Second Term* All partials with respect to $t$ are zero. #{
 
-        \NewDocumentCommand{\RttS}{m}{\ensuremath{          ∂_{t}\,𝛤^{\O#1}_{t\O#1} }}
-        \NewDocumentCommand{\RttSc}{m}{\ensuremath{\cancelto{0}{ ∂_{t}\,𝛤^{\O#1}_{t\O#1} }}}
+        let (Rtt2m,_,Rtt2c) = makeVariants1( (index) => $ pd(t, 𝛤^(index)_(t index)) $)
+        $
+        Rtt2m(𝜆) &= Rtt2c(t) + Rtt2c(r) + Rtt2c(𝜃) + Rtt2c(𝜑) \
+                 &= 0
+        $
+    }
+    
+    *$R_(t t)$ Third Term* The only value of $𝜆$ that has a non-zero Christoffel is $r$ and then all values of $𝜌$ will have non-zero Christoffel Symbols. #{
 
-        \begin{align*}
-            \RttS{𝜆} &= \RttSc{t} + \RttSc{r} + \RttSc{𝜃} + \RttSc{𝜑} \\
-            &= 0
-        \end{align*}
+        let (Rtt3m, Rtt3h, Rtt3c) = makeVariants2( (i1,i2) => $𝛤^(i1)_(t t) 𝛤^(i2)_(i1 i2)$)
+        $
+        Rtt3m(𝜆,𝜌) &= && Rtt3c(t,t) + Rtt3c(t,r)  + Rtt3c(t,𝜃) + Rtt3c(t,𝜑) \
+                   && +&  Rtt3h(r,t)  + Rtt3h(r,r) + Rtt3h(r,𝜃) + Rtt3h(r,𝜑) \
+                   && +&  Rtt3c(𝜃,t) + Rtt3c(𝜃,r) + Rtt3c(𝜃,𝜃) + Rtt3c(𝜃,𝜑) \
+                   && +&  Rtt3c(𝜑,t) + Rtt3c(𝜑,r) + Rtt3c(𝜑,𝜃) + Rtt3c(𝜑,𝜑) \
+                  \
+                   &= &&  (-A')/(2B) (A')/(2A) + (-A')/(2B) (B')/(2B) + (-A')/(2B) 1/r  + (-A')/(2B) 1/r  \
+                   &= && -(A'^2)/(4A B) - (A'B')/(4B^2) - (A')/(r B)
+        $
     }
 
-    \paragraph{$R_{tt}$ Third Term} The only value of $𝜆$ that has a non-zero Christoffel is $r$ and then all values of $𝜌$ will have non-zero Christoffel Symbols.{
+    *$R_(t t)$ Fourth Term* The only non-zero Christoffel symbols have one $r$ and two $t$ indices. #{
 
-                        % Ricci tt Third-term
-        \NewDocumentCommand{\RttT}{mm}{\ensuremath{          𝛤^{\O{#1}}_{tt} 𝛤^{\G{#2}}_{\O{#1}\G{#2}} }}
-        \NewDocumentCommand{\RttTc}{mm}{\ensuremath{\cancelto{0}{ 𝛤^{\O{#1}}_{tt} 𝛤^{\G{#2}}_{\O{#1}\G{#2}} }}}
+        let (Rtt4m, Rtt4h, Rtt4c)  = makeVariants2((i1, i2) => $𝛤^i1_(t i2) 𝛤^i2_(i1 t)$)
+        $
+        Rtt4m(𝜆,𝜌)  &= && Rtt4c(t,t) + Rtt4h(t,r)  + Rtt4c(t,𝜃) + Rtt4c(t,𝜑) \
+                    && +& Rtt4h(r,t) + Rtt4c(r,r) + Rtt4c(r,𝜃) + Rtt4c(r,𝜑) \
+                    && +& Rtt4c(𝜃,t) + Rtt4c(𝜃,r) + Rtt4c(𝜃,𝜃) + Rtt4c(𝜃,𝜑) \
+                    && +& Rtt4c(𝜑,t) + Rtt4c(𝜑,r) + Rtt4c(𝜑,𝜃) + Rtt4c(𝜑,𝜑) \
+                    \
+                    &= && (-A')/(2B) (A')/(2A) + (A')/(2A)(-A')/(2B) \
+                    &= && -(A'^2)/(2A B)
+        $
+    }
+    
+    *$R_(t t)$* Complete
+        $
+        r_(t t) &= (A'B')/(2B^2) - (A'')/(2B) - 0 + (-A'^2)/(4A B) - (A'B')/(4B^2) + (-A')/(r B) -(-A'^2)/(2A  B) \
+                &= -(A'')/(2B) + (A'B')/(4B^2) + (A'^2)/(4A B) - (A')/(r B)
+        $
 
-        \begin{align*}
-            \RttT 𝜆𝜌 &=\quad\RttTc tt + \RttTc tr  + \RttTc t𝜃 + \RttTc t𝜑 \\
-            &\quad+\RttT  rt + \RttT  rr + \RttT  r𝜃 + \RttT  r𝜑 \\
-            &\quad+\RttTc 𝜃t + \RttTc 𝜃r + \RttTc 𝜃𝜃 + \RttTc 𝜃𝜑 \\
-            &\quad+\RttTc 𝜑t + \RttTc 𝜑r + \RttTc 𝜑𝜃 + \RttTc 𝜑𝜑 \\
-            %
-            &= \frac{-A'}{2B} \frac{ A'}{2A} + \frac{-A'}{2B} \frac{ B'}{2B}  + \frac{-A'}{2B}\recip{r}  +\frac{-A'}{2B} \recip{r}      \\
-            &= -\frac{A'^2}{4AB} - \frac{A'B'}{4B^2} + \frac{-A'}{rB} \\
-        \end{align*}
+
+=== $R_(r r)$ Component of the Ricci Tensor
+
+    #let O𝜆 = Orange[𝜆]
+    #let G𝜌 = Green[𝜌]
+
+    $ R_(r r) = pd(O𝜆, 𝛤^(O𝜆)_(r r)) - pd(r, 𝛤^(O𝜆)_(r O𝜆)) + 𝛤^(O𝜆)_(r r) 𝛤^(G𝜌)_(O𝜆 G𝜌) - 𝛤^(O𝜆)_(r G𝜌) 𝛤^(G𝜌)_(O𝜆 r) $
+
+    *$R_(r r)$ First Term* Only the partial with respect to $r$ will be non-zero #{
+
+        let (Rrr1m, Rrr1h, Rrr1c) = makeVariants1((index) => $ pd(index, 𝛤^(index)_(r r)) $)
+        $
+        Rrr1m(𝜆) &= Rrr1c(t) + Rrr1h(r) + Rrr1c(𝜃) + Rrr1c(𝜑) \
+                 &= pd(r, (B')/(2B)) \
+                 &= ((-2B')(B') + (B'')(2B))/(4B^2) \
+                 &= -(B'^2)/(2B^2) + (B'')/(2B)
+        $
     }
 
-    \paragraph{$R_{tt}$ Fourth Term} The only non-zero Christoffel symbols have one $r$ and two $t$ indices.{
+    *$R_(r r)$ Second Term*  #{
 
-                        % Ricci tt Fourth-term
-        \NewDocumentCommand{\RttF}{mm}{\ensuremath{          𝛤^{\O{#1}}_{t\G{#2}} 𝛤^{\G{#2}}_{\O{#1}t} }}
-        \NewDocumentCommand{\RttFc}{mm}{\ensuremath{\cancelto{0}{ 𝛤^{\O{#1}}_{t\G{#2}} 𝛤^{\G{#2}}_{\O{#1}t} }}}
-
-        \begin{align*}
-            \RttF 𝜆𝜌 &=\quad\RttFc tt  + \RttF tr  + \RttFc t𝜃 + \RttFc t𝜑 \\
-            &\quad+\RttF  rt + \RttFc rr + \RttFc r𝜃 + \RttFc r𝜑 \\
-            &\quad+\RttFc 𝜃t + \RttFc 𝜃r + \RttFc 𝜃𝜃 + \RttFc 𝜃𝜑 \\
-            &\quad+\RttFc 𝜑t + \RttFc 𝜑r + \RttFc 𝜑𝜃 + \RttFc 𝜑𝜑 \\
-            %
-            &=\frac{-A'}{2B}\frac{ A'}{2A} + \frac{ A'}{2A}\frac{-A'}{2B} \\
-            &=\frac{-A'^2}{2AB}
-        \end{align*}
+        let (Rrr2m, Rrr2h, _) = makeVariants1((index) => $ pd(r, 𝛤^(index)_(r index)) $)
+        $
+        Rrr2m(𝜆) &= Rrr2h(t) + Rrr2h(r) + Rrr2h(𝜃) + Rrr2h(𝜑) \
+                 &= pd(r, (A')/(2A)) + pd(r, (B')/(2B)) + pd(r, 1/r) + pd(r, 1/r) \
+                 &= ((-2A')(A') + (A'')(2A))/(4A^2) + ((-2B')(B') + (B'')(2B))/(4B^2) + (-1)/(r^2) + (-1)/(r^2) \
+                 &= (-A'^2)/(2A^2) + (A'')/(2A) + (-B'^2)/(2B^2) + (B'')/(2B) + (-2)/(r^2) \
+                 &= -(A'^2)/(2A^2) + (A'')/(2A) - (B'^2)/(2B^2) + (B'')/(2B) - 2/(r^2)
+        $
     }
 
-    \paragraph{$R_{tt}$ Complete}
+    *$R_(r r)$ Third Term* The only value of $𝜆$ that has a non-zero Christoffel is $r$ and then all values of $𝜌$ will have non-zero Christoffel Symbols. #{
 
-    \begin{align*}
-        r_{tt} &= \frac{A'B'}{2B^2} - \frac{A''}{2B} - 0 + \frac{-A'^2}{4AB} - \frac{A'B'}{4B^2} + \frac{-A'}{rB} -\frac{-A'^2}{2AB}  \\
-        &= \frac{-A''}{2B} + \frac{A'B'}{4B^2} + \frac{A'^2}{4AB} + \frac{-A'}{rB}
-    \end{align*}
-
-    \subsubsection{$R_{rr}$ Component of the Ricci Tensor}
-    \[
-        R_{rr} = ∂_{\O𝜆} 𝛤^{\O𝜆}_{rr} - ∂_{r} 𝛤^{\O𝜆}_{r\O𝜆} + 𝛤^{\O𝜆}_{rr} 𝛤^{\G𝜌}_{\O𝜆\G𝜌} - 𝛤^{\O𝜆}_{r\G𝜌} 𝛤^{\G𝜌}_{\O𝜆r}
-    \]
-
-    \paragraph{$R_{rr}$ First Term} Only the partial with respect to $r$ will be non-zero{
-
-                        % Ricci rr Initial-term
-        \NewDocumentCommand{\RrrI}{m}{\ensuremath{          ∂_{\O#1}\,𝛤^{\O#1}_{rr} }}
-        \NewDocumentCommand{\RrrIc}{m}{\ensuremath{\cancelto{0}{ ∂_{\O#1}\,𝛤^{\O#1}_{rr} }}}
-
-        \begin{align*}
-            \RrrI{𝜆} &= \RrrIc{t} + \RrrI{r} + \RrrIc{𝜃} + \RrrIc{𝜑} \\
-            &= ∂_r\, \frac{ B'}{2B}  \\
-            &= \frac{(-2B')(B') + (B'')(2B)}{4B^2} \\
-            &= \frac{-B'^2}{2B^2} + \frac{B''}{2B} \\
-        \end{align*}
+        let (Rrr3m, Rrr3h, Rrr3c) = makeVariants2((i1, i2) => $ 𝛤^(i1)_(r r) 𝛤^(i2)_(i1 i2) $)
+        $
+        Rrr3m(𝜆,𝜌) &= && Rrr3c(t,t) + Rrr3c(t,r)  + Rrr3c(t,𝜃) + Rrr3c(t,𝜑) \
+                   && +&  Rrr3h(r,t)  + Rrr3h(r,r) + Rrr3h(r,𝜃) + Rrr3h(r,𝜑) \
+                   && +&  Rrr3c(𝜃,t) + Rrr3c(𝜃,r) + Rrr3c(𝜃,𝜃) + Rrr3c(𝜃,𝜑) \
+                   && +&  Rrr3c(𝜑,t) + Rrr3c(𝜑,r) + Rrr3c(𝜑,𝜃) + Rrr3c(𝜑,𝜑) \
+                  \
+                   &= && (B')/(2B) (A')/(2A) + (B')/(2B) (B')/(2B) + (B')/(2B) 1/r + (B')/(2B) 1/r \
+                   &= && (A'B')/(4A B) + (B'^2)/(4B^2) + (B')/(r B)
+        $
     }
 
-    \paragraph{$R_{rr}$ Second Term} {
+    *$R_(r r)$ Fourth Term* The only non-zero Christoffel symbols have one $r$ index and the other two indices are equal. #{
 
-    % Ricci rr Second-term
-        \NewDocumentCommand{\RrrS}{m}{\ensuremath{          ∂_{r}\,𝛤^{\O#1}_{r\O#1} }}
-        \NewDocumentCommand{\RrrSc}{m}{\ensuremath{\cancelto{0}{ ∂_{r}\,𝛤^{\O#1}_{r\O#1} }}}
-
-        \begin{align*}
-            \RrrS{𝜆} &= \RrrS{t} + \RrrS{r} + \RrrS{𝜃} + \RrrS{𝜑} \\
-            &= ∂_{r}\,\frac{ A'}{2A} + ∂_{r}\,\frac{ B'}{2B} + ∂_{r}\,\recip{r} + ∂_{r}\,\recip{r} \\
-            &= \frac{(-2A')(A') + (A'')(2A)}{4A^2} + \frac{(-2B')(B') + (B'')(2B)}{4B^2} + \frac{-1}{r^2} + \frac{-1}{r^2} \\
-            &= \frac{-A'^2}{2A^2} + \frac{A''}{2A} + \frac{-B'^2}{2B^2} + \frac{B''}{2B} + \frac{-2}{r^2}
-        \end{align*}
+        let (Rrr4m, Rrr4h, Rrr4c) = makeVariants2((i1, i2) => $ 𝛤^i1_(r i2) 𝛤^i2_(i1 r) $)
+        $
+        Rrr4m(𝜆,𝜌)  &= && Rrr4h(t,t)  + Rrr4c(t,r)  + Rrr4c(t,𝜃) + Rrr4c(t,𝜑) \
+                    && +&  Rrr4c(r,t) + Rrr4h(r,r)  + Rrr4c(r,𝜃) + Rrr4c(r,𝜑) \
+                    && +&  Rrr4c(𝜃,t) + Rrr4c(𝜃,r) + Rrr4h(𝜃,𝜃) + Rrr4c(𝜃,𝜑) \
+                    && +&  Rrr4c(𝜑,t) + Rrr4c(𝜑,r) + Rrr4c(𝜑,𝜃) + Rrr4h(𝜑,𝜑) \
+                    \
+                     &= && (A')/(2A) (A')/(2A) + (B')/(2B) (B')/(2B) + 1/r 1/r + 1/r 1/r \
+                     &= && (A'^2)/(4A^2) + (B'^2)/(4B^2) + 2/(r^2)
+        $
     }
 
-    \paragraph{$R_{rr}$ Third Term} The only non-zero Christoffel symbols have one $r$ and two $t$ indices.{
+    *$R_(r r)$ Complete*
+        $
+        R_(r r) &= (-(B'^2)/(2B^2) + (B'')/(2B)) \
+                &- (-(A'^2)/(2A^2) + (A'')/(2A) - (B'^2)/(2B^2) + (B'')/(2B) - 2/(r^2)) \
+                &+ ((A'B')/(4A B) + (B'^2)/(4B^2) + (B')/(r B)) \
+                &- ((A'^2)/(4A^2) + (B'^2)/(4B^2) + 2/(r^2)) \
+                \
+                &= -(A'')/(2A) + (A'B')/(4A B) + (A'^2)/(4A^2) + (B')/(r B)
+        $
 
-                        % Ricci rr Third-term
-        \NewDocumentCommand{\RrrT}{mm}{\ensuremath{          𝛤^{\O{#1}}_{rr} 𝛤^{\G{#2}}_{\O{#1}\G{#2}} }}
-        \NewDocumentCommand{\RrrTc}{mm}{\ensuremath{\cancelto{0}{ 𝛤^{\O{#1}}_{rr} 𝛤^{\G{#2}}_{\O{#1}\G{#2}} }}}
+=== $R_(𝜃 𝜃)$ Component of the Ricci Tensor
 
-        \begin{align*}
-            \RrrT 𝜆𝜌 &=\quad\RrrTc tt + \RrrTc tr  + \RrrTc t𝜃 + \RrrTc t𝜑 \\
-            &\quad+\RrrT  rt + \RrrT  rr + \RrrT  r𝜃 + \RrrT  r𝜑 \\
-            &\quad+\RrrTc 𝜃t + \RrrTc 𝜃r + \RrrTc 𝜃𝜃 + \RrrTc 𝜃𝜑 \\
-            &\quad+\RrrTc 𝜑t + \RrrTc 𝜑r + \RrrTc 𝜑𝜃 + \RrrTc 𝜑𝜑 \\
-            %
-            &=  \frac{ B'}{2B} \frac{ A'}{2A}  + \frac{ B'}{2B}\frac{ B'}{2B} + \frac{ B'}{2B} \recip{r}    +\frac{ B'}{2B} \recip{r}  \\
-            &=  \frac{ A'B'}{4AB} + \frac{ B'^2}{4B^2} + \frac{ B'}{rB}  \\
-        \end{align*}
+    #let O𝜆 = Orange[𝜆]
+    #let G𝜌 = Green[𝜌]
+
+    $ R_(𝜃 𝜃) = pd(O𝜆, 𝛤^(O𝜆)_(𝜃 𝜃)) - pd(𝜃, 𝛤^(O𝜆)_(𝜃 O𝜆)) + 𝛤^(O𝜆)_(𝜃 𝜃) 𝛤^(G𝜌)_(O𝜆 G𝜌) - 𝛤^(O𝜆)_(𝜃 G𝜌) 𝛤^(G𝜌)_(O𝜆 𝜃) $
+
+    *$R_(𝜃 𝜃)$ First Term* Only the partial with respect to $r$ will be non-zero #{
+
+        let (Rhh1m, Rhh1h, Rhh1c) = makeVariants1((index) => $ pd(index, 𝛤^(index)_(𝜃 𝜃)) $)
+        $
+        Rhh1m(𝜆) &= Rhh1c(t) + Rhh1h(r) + Rhh1c(𝜃) + Rhh1c(𝜑) \
+                 &= pd(r, (-r)/B) \
+                 &= ((-B')(-r) + (-1)(B))/(B^2) \
+                 &= (r B')/(B^2) - 1/B
+        $
     }
 
-    \paragraph{$R_{rr}$ Fourth Term} The only non-zero Christoffel symbols have one $r$ and two $t$ indices.{
+    *$R_(𝜃 𝜃)$ Second Term* Only the partial with respect to $𝜃$ is non-zero #{
 
-                        % Ricci rr Fourth-term
-        \NewDocumentCommand{\RrrF}{mm}{\ensuremath{          𝛤^{\O{#1}}_{r\G{#2}} 𝛤^{\G{#2}}_{\O{#1}r} }}
-        \NewDocumentCommand{\RrrFc}{mm}{\ensuremath{\cancelto{0}{ 𝛤^{\O{#1}}_{r\G{#2}} 𝛤^{\G{#2}}_{\O{#1}r} }}}
-
-        \begin{align*}
-            \RrrF 𝜆𝜌 &=\quad\RrrF  tt + \RrrFc tr + \RrrFc t𝜃 + \RrrFc t𝜑 \\
-            &\quad+\RrrFc rt + \RrrF  rr + \RrrFc r𝜃 + \RrrFc r𝜑 \\
-            &\quad+\RrrFc 𝜃t + \RrrFc 𝜃r + \RrrF  𝜃𝜃 + \RrrFc 𝜃𝜑 \\
-            &\quad+\RrrFc 𝜑t + \RrrFc 𝜑r + \RrrFc 𝜑𝜃 + \RrrF  𝜑𝜑 \\
-            %
-            &=  \frac{ A'}{2A}\,\frac{ A'}{2A} + \frac{ B'}{2B}\,\frac{ B'}{2B} + \recip{r}\recip{r} + \recip{r}\recip{r}  \\
-            &=  \frac{ A'^2}{4A^2} + \frac{ B'^2}{4B^2} + \frac{2}{r^2} \\
-        \end{align*}
+        let (Rhh2m, Rhh2h, Rhh2c) = makeVariants1((index) => $ pd(𝜃, 𝛤^(index)_(𝜃 index)) $)
+        $
+        Rhh2m(𝜆) &= Rhh2c(t) + Rhh2c(r) + Rhh2c(𝜃) + Rhh2h(𝜑) \
+                 &= pd(𝜃, cot 𝜃 ) \
+                 &= -1/sin^2 𝜃 \
+                 &= -csc^2 𝜃
+        $
     }
 
-    \paragraph{$R_{rr}$ Complete}
+    *$R_(𝜃 𝜃)$ Third Term* The only value of $𝜆$ that has a non-zero Christoffel is $r$ and then all values of $𝜌$ will have non-zero Christoffel Symbols. #{
 
-    \begin{align*}
-        r_{rr} &=\quad \frac{-B'^2}{2B^2} + \frac{B''}{2B} \\
-        &\quad- \left( \frac{-A'^2}{2A^2} + \frac{A''}{2A} + \frac{-B'^2}{2B^2} + \frac{B''}{2B} + \frac{-2}{r^2}  \right) \\
-        &\quad+ \frac{ A'B'}{4AB} + \frac{ B'^2}{4B^2} + \frac{ B'}{rB} \\
-        &\quad- \left(  \frac{ A'^2}{4A^2} + \frac{ B'^2}{4B^2} + \frac{2}{r^2} \right) \\
-        &=\quad \frac{-A''}{2A} + \frac{ A'B'}{4AB} +\frac{ A'^2}{4A^2}  + \frac{ B'}{rB}
-    \end{align*}
-
-
-    \subsubsection{$R_{𝜃𝜃}$ Component of the Ricci Tensor}
-    \[
-        R_{𝜃𝜃} = ∂_{\O𝜆} 𝛤^{\O𝜆}_{𝜃𝜃} - ∂_{𝜃} 𝛤^{\O𝜆}_{𝜃\O𝜆} + 𝛤^{\O𝜆}_{𝜃𝜃} 𝛤^{\G𝜌}_{\O𝜆\G𝜌} - 𝛤^{\O𝜆}_{𝜃\G𝜌} 𝛤^{\G𝜌}_{\O𝜆𝜃}
-    \]
-
-    \paragraph{$R_{𝜃𝜃}$ First Term}{
-
-    % Ricci 𝜃𝜃 Initial-term
-        \NewDocumentCommand{\RhhI}{m}{\ensuremath{          ∂_{\O#1}\,𝛤^{\O#1}_{𝜃𝜃} }}
-        \NewDocumentCommand{\RhhIc}{m}{\ensuremath{\cancelto{0}{ ∂_{\O#1}\,𝛤^{\O#1}_{𝜃𝜃} }}}
-
-        \begin{align*}
-            \RhhI{𝜆} &= \RhhIc{t} + \RhhI{r} + \RhhIc{𝜃} + \RhhIc{𝜑} \\
-            &= ∂_r\,  \frac{-r}{B}  \\
-            &=  \frac{(-B')(-r) + (-1)(B)}{B^2} \\
-            &=  \frac{rB'}{B^2} + \frac{-1}{B}\\
-        \end{align*}
+        let (Rhh3m, Rhh3h, Rhh3c) = makeVariants2((i1, i2) => $ 𝛤^(i1)_(𝜃 𝜃) 𝛤^(i2)_(i1 i2) $)
+        $
+        Rhh3m(𝜆,𝜌) &= && Rhh3c(t,t) + Rhh3c(t,r)  + Rhh3c(t,𝜃) + Rhh3c(t,𝜑) \
+                   && +&  Rhh3h(r,t)  + Rhh3h(r,r) + Rhh3h(r,𝜃) + Rhh3h(r,𝜑) \
+                   && +&  Rhh3c(𝜃,t) + Rhh3c(𝜃,r) + Rhh3c(𝜃,𝜃) + Rhh3c(𝜃,𝜑) \
+                   && +&  Rhh3c(𝜑,t) + Rhh3c(𝜑,r) + Rhh3c(𝜑,𝜃) + Rhh3c(𝜑,𝜑) \
+                  \
+                   &= && (-r)/B A'/(2A) + (-r)/B (B')/(2B) + (-r)/B 1/r + (-r)/B 1/r \
+                   &= && -(r A')/(2A B) - (r B')/(2B^2) - 2/B
+        $
     }
 
-    \paragraph{$R_{𝜃𝜃}$ Second Term} {
+    *$R_(𝜃 𝜃)$ Fourth Term* The only non-zero Christoffel symbols have one $r$ and two angular indices. #{
 
-    % Ricci 𝜃𝜃 Second-term
-        \NewDocumentCommand{\RhhS}{m}{\ensuremath{          ∂_{𝜃}\,𝛤^{\O#1}_{𝜃\O#1} }}
-        \NewDocumentCommand{\RhhSc}{m}{\ensuremath{\cancelto{0}{ ∂_{𝜃}\,𝛤^{\O#1}_{𝜃\O#1} }}}
-
-        \begin{align*}
-            \RhhS{𝜆} &= \RhhSc{t} + \RhhSc{r} + \RhhSc{𝜃} + \RhhS{𝜑} \\
-            &= ∂_{𝜃}\,\cot𝜃 \\
-            &=  \frac{-1}{\sin^2𝜃}\\
-            &=  - csc^2𝜃  \\
-        \end{align*}
+        let (Rhh4m, Rhh4h, Rhh4c) = makeVariants2((i1, i2) => $ 𝛤^i1_(𝜃 i2) 𝛤^i2_(i1 𝜃) $)
+        $
+        Rhh4m(𝜆,𝜌) &= && Rhh4c(t,t) + Rhh4c(t,r)  + Rhh4c(t,𝜃) + Rhh4c(t,𝜑) \
+                   && +&  Rhh4c(r,t) + Rhh4c(r,r) + Rhh4h(r,𝜃) + Rhh4c(r,𝜑) \
+                   && +&  Rhh4c(𝜃,t) + Rhh4h(𝜃,r) + Rhh4c(𝜃,𝜃) + Rhh4c(𝜃,𝜑) \
+                   && +&  Rhh4c(𝜑,t) + Rhh4c(𝜑,r) + Rhh4c(𝜑,𝜃) + Rhh4h(𝜑,𝜑) \
+                  \
+                   &= && (-r)/B 1/r + 1/r (-r)/B + cot 𝜃 cot 𝜃 \
+                   &= && -2/B + cot^2 𝜃
+        $
     }
 
-    \paragraph{$R_{𝜃𝜃}$ Third Term} The only non-zero Christoffel symbols have one $r$ and two $t$ indices.{
+    *$R_(𝜃 𝜃)$* Complete
+        $
+        r_(𝜃 𝜃) &= (r B')/(B^2) - 1/B \
+                &- (-csc^2(𝜃)) \
+                &+ (-(r A')/(2A B) - (r B')/(2B^2) - 2/B) \
+                &- (-2/B + cot^2 𝜃 ) \
+                \
+                &= -(r A')/(2A B) + (r B')/(2B^2) - 1/B + csc^2 𝜃 - cot^2 𝜃 \
+                &= -(r A')/(2A B) + (r B')/(2B^2) - 1/B + 1
+        $
 
-                        % Ricci 𝜃𝜃 Third-term
-        \NewDocumentCommand{\RhhT}{mm}{\ensuremath{          𝛤^{\O{#1}}_{𝜃𝜃} 𝛤^{\G{#2}}_{\O{#1}\G{#2}} }}
-        \NewDocumentCommand{\RhhTc}{mm}{\ensuremath{\cancelto{0}{ 𝛤^{\O{#1}}_{𝜃𝜃} 𝛤^{\G{#2}}_{\O{#1}\G{#2}} }}}
+=== $R_(𝜑 𝜑)$ Component of the Ricci Tensor
 
-        \begin{align*}
-            \RhhT 𝜆𝜌 &=\quad\RhhTc tt + \RhhTc tr  + \RhhTc t𝜃 + \RhhTc t𝜑 \\
-            &\quad+\RhhT  rt + \RhhT  rr + \RhhT  r𝜃 + \RhhT  r𝜑 \\
-            &\quad+\RhhTc 𝜃t + \RhhTc 𝜃r + \RhhTc 𝜃𝜃 + \RhhTc 𝜃𝜑 \\
-            &\quad+\RhhTc 𝜑t + \RhhTc 𝜑r + \RhhTc 𝜑𝜃 + \RhhTc 𝜑𝜑 \\
-            %
-            &= \frac{-r}{B} \frac{ A'}{2A}   + \frac{-r}{B} \frac{ B'}{2B}  + \frac{-r}{B} \recip{r}   + \frac{-r}{B} \recip{r}     \\
-            &= \frac{-rA'}{2AB}             + \frac{-rB'}{2B^2}             + \frac{-2}{B}      \\
-        \end{align*}
+    #let O𝜆 = Orange[𝜆]
+    #let G𝜌 = Green[𝜌]
+
+    $ R_(𝜑 𝜑) = pd(O𝜆, 𝛤^(O𝜆)_(𝜑 𝜑)) - pd(𝜑, 𝛤^(O𝜆)_(𝜑 O𝜆)) + 𝛤^(O𝜆)_(𝜑 𝜑) 𝛤^(G𝜌)_(O𝜆 G𝜌) - 𝛤^(O𝜆)_(𝜑 G𝜌) 𝛤^(G𝜌)_(O𝜆 𝜑) $
+
+    *$R_(𝜑 𝜑)$ First Term* Only the partials with respect to $r$ and $𝜃$ will be non-zero #{
+
+        let (Rpp1m, Rpp1h, Rpp1c) = makeVariants1((index) => $ pd(index, 𝛤^(index)_(𝜑 𝜑)) $)
+        $
+        Rpp1m(𝜆) &= Rpp1c(t) + Rpp1h(r) + Rpp1h(𝜃) + Rpp1c(𝜑) \
+                 &= pd(r, ((-r sin^2 𝜃)/B)) + pd(𝜃, (-sin 𝜃 cos 𝜃)) \
+                 &= ((B)(-sin^2 𝜃) - (-r sin^2 𝜃)(B'))/B^2 + (-sin 𝜃)(-sin 𝜃) + (cos 𝜃)(-cos 𝜃) \
+                 &= -(sin^2 𝜃)/B + (r sin^2 𝜃 B')/B^2 + sin^2 𝜃 - cos^2 𝜃
+        $
     }
 
-    \paragraph{$R_{𝜃𝜃}$ Fourth Term} The only non-zero Christoffel symbols have one $r$ and two $t$ indices.{
+    *$R_(𝜑 𝜑)$ Second Term* All partials with respect to $𝜑$ are zero. #{
 
-                        % Ricci 𝜃𝜃 Fourth-term
-        \NewDocumentCommand{\RhhF}{mm}{\ensuremath{          𝛤^{\O{#1}}_{𝜃\G{#2}} 𝛤^{\G{#2}}_{\O{#1}𝜃} }}
-        \NewDocumentCommand{\RhhFc}{mm}{\ensuremath{\cancelto{0}{ 𝛤^{\O{#1}}_{𝜃\G{#2}} 𝛤^{\G{#2}}_{\O{#1}𝜃} }}}
-
-        \begin{align*}
-            \RhhF 𝜆𝜌 &=\quad\RhhFc tt + \RhhFc tr + \RhhFc t𝜃 + \RhhFc t𝜑 \\
-            &\quad+\RhhFc rt + \RhhFc rr + \RhhF  r𝜃 + \RhhFc r𝜑 \\
-            &\quad+\RhhFc 𝜃t + \RhhF  𝜃r + \RhhFc 𝜃𝜃 + \RhhFc 𝜃𝜑 \\
-            &\quad+\RhhFc 𝜑t + \RhhFc 𝜑r + \RhhFc 𝜑𝜃 + \RhhF  𝜑𝜑 \\
-            %
-            &= \left(\frac{-r}{B}\right) \left(\recip{r}\right)  + \left(\recip{r}\right) \left(\frac{-r}{B}\right) + (\cot𝜃)(\cot𝜃) \\
-            &=  \frac{-2}{B} + \cot^2𝜃   \\
-        \end{align*}
+        let (Rpp2m,_,Rpp2c) = makeVariants1((index) => $ pd(𝜑, 𝛤^(index)_(𝜑 index)) $)
+        $
+        Rpp2m(𝜆) &= Rpp2c(t) + Rpp2c(r) + Rpp2c(𝜃) + Rpp2c(𝜑) \
+                 &= 0
+        $
     }
 
-    \paragraph{$R_{𝜃𝜃}$ Complete}
+    *$R_(𝜑 𝜑)$ Third Term* The only value of $𝜆$ that has a non-zero Christoffel is $r$ and then all values of $𝜌$ contribute. #{
 
-    \begin{align*}
-        r_{𝜃𝜃} &=\quad  \frac{rB'}{B^2} + \frac{-1}{B} \\
-        &\quad- \left( - csc^2𝜃  \right) \\
-        &\quad+ \frac{-rA'}{2AB}             + \frac{-rB'}{2B^2}             + \frac{-2}{B}   \\
-        &\quad- \left( \frac{-2}{B} + \cot^2𝜃   \right) \\
-        &= \frac{-rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + csc^2𝜃 -\cot^2𝜃  \\
-        &= \frac{-rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + 1
-    \end{align*}
-
-    %===================================================================================================================
-    \subsubsection{$R_{𝜑𝜑}$ Component of the Ricci Tensor}
-    \[
-        R_{𝜑𝜑} = ∂_{\O𝜆} 𝛤^{\O𝜆}_{𝜑𝜑} - ∂_{𝜑} 𝛤^{\O𝜆}_{𝜑\O𝜆} + 𝛤^{\O𝜆}_{𝜑𝜑} 𝛤^{\G𝜌}_{\O𝜆\G𝜌} - 𝛤^{\O𝜆}_{𝜑\G𝜌} 𝛤^{\G𝜌}_{\O𝜆𝜑}
-    \]
-
-    \paragraph{$R_{𝜑𝜑}$ First Term}{
-
-    % Ricci 𝜑𝜑 Initial-term
-        \NewDocumentCommand{\RppI}{m}{\ensuremath{          ∂_{\O#1}\,𝛤^{\O#1}_{𝜑𝜑} }}
-        \NewDocumentCommand{\RppIc}{m}{\ensuremath{\cancelto{0}{ ∂_{\O#1}\,𝛤^{\O#1}_{𝜑𝜑} }}}
-
-        \begin{align*}
-            \RppI{𝜆} &= \RppIc{t} + \RppI{r} + \RppI{𝜃} + \RppIc{𝜑} \\
-            &= ∂_r\left(\frac{-r\,\sin^2𝜃}{B}\right) + ∂_{𝜃}(-\sin𝜃\,\cos𝜃)  \\
-            &= \frac{(B)(-\sin^2𝜃) - (-r\,\sin^2𝜃)(B')}{B^2} + (-\sin𝜃)(-\sin𝜃) + (\cos𝜃)(-\cos𝜃) \\
-            &= \frac{-\sin^2𝜃}{B} + \frac{r\,\sin^2𝜃\,B'}{B^2} + \sin^2𝜃 -\cos^2𝜃   \\
-        \end{align*}
+        let (Rpp3m, Rpp3h, Rpp3c) = makeVariants2((i1, i2) => $ 𝛤^(i1)_(𝜑 𝜑) 𝛤^(i2)_(i1 i2) $)
+        $
+        Rpp3m(𝜆,𝜌) &= && Rpp3c(t,t) + Rpp3c(t,r)  + Rpp3c(t,𝜃) + Rpp3c(t,𝜑) \
+                   && +&  Rpp3h(r,t)  + Rpp3h(r,r) + Rpp3h(r,𝜃) + Rpp3h(r,𝜑) \
+                   && +&  Rpp3c(𝜃,t) + Rpp3c(𝜃,r) + Rpp3c(𝜃,𝜃) + Rpp3h(𝜃,𝜑) \
+                   && +&  Rpp3c(𝜑,t) + Rpp3c(𝜑,r) + Rpp3c(𝜑,𝜃) + Rpp3c(𝜑,𝜑) \
+                  \
+                   &= && (-(r sin^2 𝜃)/B)(A'/(2 A)) + (-(r sin^2 𝜃)/B)(B'/(2 B)) + (-(r sin^2 𝜃)/B)(1/r) + (-(r sin^2 𝜃)/B)(1/r) \
+                   && +& (-sin 𝜃 cos 𝜃)(cot 𝜃) \
+                   &= && -(r sin^2 𝜃 A')/(2 A B) - (r sin^2 𝜃 B')/(2 B^2) - (2 sin^2 𝜃)/B - cos^2 𝜃
+        $
     }
 
-    \paragraph{$R_{𝜑𝜑}$ Second Term} {
+    *$R_(𝜑 𝜑)$ Fourth Term* The non-zero Christoffel products involve the $(r,𝜑)$ and $(𝜃,𝜑)$ couplings. #{
 
-    % Ricci 𝜑𝜑 Second-term
-        \NewDocumentCommand{\RppS}{m}{\ensuremath{          ∂_{𝜑}\,𝛤^{\O#1}_{𝜑\O#1} }}
-        \NewDocumentCommand{\RppSc}{m}{\ensuremath{\cancelto{0}{ ∂_{𝜑}\,𝛤^{\O#1}_{𝜑\O#1} }}}
-
-        \begin{align*}
-            \RppS{𝜆} &= \RppSc{t} + \RppSc{r} + \RppSc{𝜃} + \RppSc{𝜑} \\
-            &= 0 \\
-        \end{align*}
+        let (Rpp4m, Rpp4h, Rpp4c) = makeVariants2((i1, i2) => $ 𝛤^i1_(𝜑 i2) 𝛤^i2_(i1 𝜑) $)
+        $
+        Rpp4m(𝜆,𝜌) &= && Rpp4c(t,t) + Rpp4c(t,r)  + Rpp4c(t,𝜃) + Rpp4c(t,𝜑) \
+                   && +&  Rpp4c(r,t) + Rpp4c(r,r) + Rpp4c(r,𝜃) + Rpp4h(r,𝜑) \
+                   && +&  Rpp4c(𝜃,t) + Rpp4c(𝜃,r) + Rpp4c(𝜃,𝜃) + Rpp4h(𝜃,𝜑) \
+                   && +&  Rpp4c(𝜑,t) + Rpp4h(𝜑,r) + Rpp4h(𝜑,𝜃) + Rpp4c(𝜑,𝜑) \
+                  \
+                   &= && (-(r sin^2 𝜃)/B)(1/r) + (-sin 𝜃 cos 𝜃)(cot 𝜃) \
+                   && +& (1/r)(-(r sin^2 𝜃)/B) + (cot 𝜃)(-sin 𝜃 cos 𝜃) \
+                   &= && -(2 sin^2 𝜃)/B - 2 cos^2 𝜃
+        $
     }
 
-    \paragraph{$R_{𝜑𝜑}$ Third Term} The only non-zero Christoffel symbols have one $r$ and two $t$ indices.\nopagebreak[4]{
+    *$R_(𝜑 𝜑)$* Complete
+        $
+        r_(𝜑 𝜑) &= (-(sin^2 𝜃)/B + (r sin^2 𝜃 B')/B^2 + sin^2 𝜃 - cos^2 𝜃) \
+                &- 0 \
+                &+ (-(r sin^2 𝜃 A')/(2 A B) - (r sin^2 𝜃 B')/(2 B^2) - (2 sin^2 𝜃)/B - cos^2 𝜃) \
+                &- (-(2 sin^2 𝜃)/B - 2 cos^2 𝜃) \
+                \
+                &= -(r sin^2 𝜃 A')/(2 A B) + (r sin^2 𝜃 B')/(2 B^2) - (sin^2 𝜃)/B + sin^2 𝜃 \
+                &= sin^2 𝜃 ( -(r A')/(2 A B) + (r B')/(2 B^2) - 1/B + 1 )
+        $
 
-    % Ricci 𝜑𝜑 Third-term
+=== The Ricci Tensor
 
-        \NewDocumentCommand{\RppT}{mm}{\ensuremath{               𝛤^{\O{#1}}_{𝜑𝜑} 𝛤^{\G{#2}}_{\O{#1}\G{#2}} }}
-        \NewDocumentCommand{\RppTc}{mm}{\ensuremath{\cancelto{0}{ 𝛤^{\O{#1}}_{𝜑𝜑} 𝛤^{\G{#2}}_{\O{#1}\G{#2}} }}}
-
-
-        \begin{align*}
-            \RppT 𝜆𝜌 &=\quad\RppTc tt + \RppTc tr  + \RppTc t𝜃 + \RppTc t𝜑 \\
-            &\quad+\RppT  rt + \RppT  rr + \RppT  r𝜃 + \RppT  r𝜑 \\
-            &\quad+\RppTc 𝜃t + \RppTc 𝜃r + \RppTc 𝜃𝜃 + \RppT 𝜃𝜑 \\
-            &\quad+\RppTc 𝜑t + \RppTc 𝜑r + \RppTc 𝜑𝜃 + \RppTc 𝜑𝜑 \\
-            %
-            &= \mathsmaller{
-                \frap{-r\,\sin^2𝜃}{B} \frap{ A'}{2A} + \frap{-r\,\sin^2𝜃}{B} \frap{ B'}{2B}  + \frap{-r\,\sin^2𝜃}{B} \frap{1}{r} + \frap{-r\,\sin^2𝜃}{B} \frap{1}{r}
-            }\\
-            &\quad + (-\sin𝜃\,\cos𝜃)(\cot𝜃)   \\
-            &=  \frac{-r\,\sin^2𝜃\,A'}{2AB} + \frac{-r\,\sin^2𝜃\,B'}{2B^2} + \frac{-2\sin^2𝜃}{B} - \cos^2𝜃  \\
-        \end{align*}
-    }
-
-    \paragraph{$R_{𝜑𝜑}$ Fourth Term} The only non-zero Christoffel symbols have one $r$ and two $t$ indices.{
-
-                        % Ricci 𝜑𝜑 Fourth-term
-        \NewDocumentCommand{\RppF}{mm}{\ensuremath{          𝛤^{\O{#1}}_{𝜑\G{#2}} 𝛤^{\G{#2}}_{\O{#1}𝜑} }}
-        \NewDocumentCommand{\RppFc}{mm}{\ensuremath{\cancelto{0}{ 𝛤^{\O{#1}}_{𝜑\G{#2}} 𝛤^{\G{#2}}_{\O{#1}𝜑} }}}
-
-        \begin{align*}
-            \RppF 𝜆𝜌 &=\quad\RppFc tt + \RppFc tr + \RppFc t𝜃 + \RppFc t𝜑 \\
-            &\quad+\RppFc rt + \RppFc rr + \RppFc r𝜃 + \RppF  r𝜑 \\
-            &\quad+\RppFc 𝜃t + \RppFc 𝜃r + \RppFc 𝜃𝜃 + \RppF  𝜃𝜑 \\
-            &\quad+\RppFc 𝜑t + \RppF  𝜑r + \RppF 𝜑𝜃 + \RppFc  𝜑𝜑 \\
-            %
-            &=\quad \frap{-r\,\sin^2𝜃}{B} \frap{1}{r} + (-\sin𝜃\,\cos𝜃)(\cot𝜃) \\
-            &\quad+ \frap{1}{r}\frap{-r\,\sin^2𝜃}{B} + (\cot𝜃)(-\sin𝜃\,\cos𝜃)  \\
-            &=  \frac{-2\sin^2𝜃}{B} - 2\cos^2𝜃     \\
-        \end{align*}
-    }
-
-    \paragraph{$R_{𝜑𝜑}$ Complete}
-
-    \begin{align*}
-        r_{𝜑𝜑} &=\quad \frac{-\sin^2𝜃}{B} + \frac{r\,\sin^2𝜃\,B'}{B^2}  + \sin^2𝜃 -\cos^2𝜃  \\
-        &\quad- 0  \\
-        &\quad+  \frac{-r\,\sin^2𝜃\,A'}{2AB} + \frac{-r\,\sin^2𝜃\,B'}{2B^2} + \frac{-2\sin^2𝜃}{B} - \cos^2𝜃  \\
-        &\quad- \left( \frac{-2\sin^2𝜃}{B} - 2\cos^2𝜃   \right) \\
-        &= \frac{-r\,\sin^2𝜃\,A'}{2AB} + \frac{r\,\sin^2𝜃\,B'}{2B^2} + \frac{-\sin^2𝜃}{B} + \sin^2𝜃 \\
-        &= \sin^2𝜃 \left( \frac{-rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + 1 \right)  \\
-    \end{align*}
-
-
-
-    \subsubsection{The Ricci Tensor}
-
-    {\tiny
-        \[
-            \begin{bmatrix}
-                \frac{-A''}{2B} + \frac{A'B'}{4B^2} + \frac{A'^2}{4AB} + \frac{-A'}{rB} & 0 & 0   & 0           \\
-                0 &  \frac{-A''}{2A} + \frac{ A'B'}{4AB} +\frac{ A'^2}{4A^2}  + \frac{ B'}{rB} & 0   & 0           \\
-                0 & 0 & \frac{-rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + 1 & 0           \\
-                0 & 0 & 0   & \sin^2𝜃 \left( \frac{-rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + 1 \right)
-            \end{bmatrix}
-        \]
-    }
+    #shrinkToWidth(
+        $
+        R_(μ ν) = diag4(
+          -(A'')/(2 B) + (A' B')/(4 B^2) + (A'^2)/(4 A B) - A'/(r B),
+          -(A'')/(2 A) + (A' B')/(4 A B) + (A'^2)/(4 A^2) + B'/(r B),
+          -(r A')/(2 A B) + (r B')/(2 B^2) - 1/B + 1,
+          sin^2 𝜃 ( -(r A')/(2 A B) + (r B')/(2 B^2) - 1/B + 1 )
+        )
+        $
+    )
 
     In the normal derivation of the Schwarzschild metric, at this point the fact that the Ricci Tensor is all zeros is used.
     However, I could not convince myself of the truth of that statement, so I decided to continue without it.
 
-    \subsection{The Ricci scalar}
+=== The Ricci scalar #{
 
-    \begin{align*}
-        R &= g^{\O𝜇\G𝜈}\,R_{\O𝜇\G𝜈} \\[6pt]
-        %
-        R &=\quad \recip{A}\left( \frac{-A''}{2B} + \frac{A'B'}{4B^2} + \frac{A'^2}{4AB} + \frac{-A'}{rB}\right)       \\
-        &\quad+ \recip{B}\left( \frac{-A''}{2A} + \frac{ A'B'}{4AB} +\frac{ A'^2}{4A^2}  + \frac{ B'}{rB} \right)   \\
-        &\quad+ \recip{r^2}\left( \frac{-rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + 1 \right) \\
-        &\quad+ \recip{r^2\,\sin^2𝜃}\left( \sin^2𝜃 \left( \frac{rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + 1 \right) \right) \\[6pt]
-        %
-        &=\quad \frac{-A''}{2AB} + \frac{A'B'}{4AB^2} +\frac{A'^2}{4A^2 B} + \frac{-A'}{rAB}       \\
-        &\quad+ \frac{-A''}{2AB} + \frac{A'B'}{4AB^2} +\frac{A'^2}{4A^2 B} + \frac{B'}{rB^2}   \\
-        &\quad+ \frac{-A'}{2rAB} + \frac{B'}{2rB^2} + \frac{-1}{r^2 B} + \recip{r^2}  \\
-        &\quad+ \frac{-A'}{2rAB} + \frac{B'}{2rB^2} + \frac{-1}{r^2 B} + \recip{r^2}  \\[6pt]
-        %
-        &= \frac{-A''}{AB} + \frac{A'B'}{2AB^2} +\frac{A'^2}{2A^2 B} + \frac{-2A'}{rAB} + \frac{2B'}{rB^2} + \frac{-2}{r^2 B} + \frac{2}{r^2}      \\
-    \end{align*}
+    let (gRm, gRh, _) = makeVariants2( (i1,i2) => $g^(i1 i2) R_(i1 i2)$)
 
-    %===================================================================================================================
-    \newpage
-    \subsection{The Einstein Field Equation}
-    \subsubsection{The $tt$ Einstein Field Equation}
+    $   R &=& & gRm(𝜇,𝜈) \
+        \
+          &=& & gRh(t,t) + gRh(r,r) + gRh(𝜃,𝜃) + gRh(𝜑,𝜑) \
+        \
+          &=& & 1/A ( -(A'')/(2 B) + (A' B')/(4 B^2) + (A'^2)/(4 A B) - (A')/(r B) ) \
+          & &+& 1/B ( -(A'')/(2 A) + (A' B')/(4 A B) + (A'^2)/(4 A^2) + (B')/(r B) ) \
+          & &+& 1/(r^2) ( -(r A')/(2 A B) + (r B')/(2 B^2) - 1/B + 1 ) \
+          & &+& 1/(r^2 sin^2 𝜃) ( sin^2 𝜃 ( (r A')/(2 A B) + (r B')/(2 B^2) - 1/B + 1 ) ) \
+        \
+          &=&-& (A'')/(2 A B) + (A' B')/(4 A B^2) + (A'^2)/(4 A^2 B) - (A')/(r A B) \
+          & &-& (A'')/(2 A B) + (A' B')/(4 A B^2) + (A'^2)/(4 A^2 B) + (B')/(r B^2) \
+          & &-& (A')/(2 r A B) + (B')/(2 r B^2) - 1/(r^2 B) + 1/(r^2) \
+          & &-& (A')/(2 r A B) + (B')/(2 r B^2) - 1/(r^2 B) + 1/(r^2) \
+        \
+          &=&-& (A'')/(A B) + (A' B')/(2 A B^2) + (A'^2)/(2 A^2 B) - (2 A')/(r A B) + (2 B')/(r B^2) - 2/(r^2 B) + 2/(r^2)
+    $
+}
+#pagebreak()
 
-    \begin{gather*}
-        R_{tt} - ½\, g_{tt}\,R = 0 \\[6pt]
-        %
-        -\frac{A''}{2B} + \frac{A'B'}{4B^2} + \frac{A'^2}{4AB} - \frac{A'}{rB}            \\
-        - ½\, A\,\left( - \frac{A''}{AB} + \frac{A'B'}{2AB^2} +\frac{A'^2}{2A^2 B} - \frac{2A'}{rAB} + \frac{2B'}{rB^2} - \frac{2}{r^2 B} + \frac{2}{r^2}   \right) = 0 \\
-        \shortintertext{distribute $-1/2\,A$}
-        - \frac{A''}{2B} + \frac{A'B'}{4B^2} + \frac{A'^2}{4AB} - \frac{A'}{rB}            \\
-        +\frac{A''}{2B} - \frac{A'B'}{4B^2} -\frac{A'^2}{4A B} + \frac{A'}{rB} - \frac{AB'}{rB^2} + \frac{A}{r^2 B} - \frac{A}{r^2} = 0 \\
-        \shortintertext{cancel opposites}
-        - \frac{AB'}{rB^2} + \frac{A}{r^2 B} - \frac{A}{r^2}  = 0 \\
-        \shortintertext{multiply by $-r/A$ and move the last term to the right hand side}
-        \frac{B'}{B^2} - \recip{rB} = - \recip{r} \\
-        \shortintertext{This is a Bernoulli differential equation. Substitute $V=-1/B$ and $V'=B'/B^2$}
-        V' + \frac{V}{r}  = -\recip{r}  \\
-        \shortintertext{compute integrating factor, $e^{\int 1/r\,dr} = e^{\ln r} = r$, and multiply by it}
-        rV' + V = -1 \\
-        (rV)' = -1  \\
-        \shortintertext{integrate both sides}
-        \int (rV)' = -\,\int 1\,dr \\
-        rV = -r + C_1 \\
-        V = -1 + C_1/r \\
-        \shortintertext{recall $V = -1/B$ so $B = -1/V$}
-        B = \frac{-1}{-1 +C_1/r}  \\
-        \boxed{B = \recip{1 - C_1/r}}  \\
-        \shortintertext{notice that this correctly matches the boundary condition $B(∞) = 𝜂_{rr} = 1$}
-    \end{gather*}
+== The Einstein Field Equation
+=== The $t t$ Einstein Field Equation
 
+$ R_(t t) - 1/2 g_(t t) R = 0 $
 
-    %-------------------------------------------------------------------------------------------------------------------
-    \newpage
-    \subsubsection{The $rr$ Einstein Field Equation}
+$
+- A''/(2B) + (A' B')/(4 B^2) + (A'^2)/(4 A B) - A'/(r B) \
+- 1/2 A ( - A''/(A B) + (A' B')/(2 A B^2) + (A'^2)/(2 A^2 B) - (2 A')/(r A B) + (2 B')/(r B^2) - 2/(r^2 B) + 2/(r^2) ) = 0
+$
 
-    \begin{gather*}
-        R_{rr} - ½\, g_{rr}\,R = 0  \\[6pt]
-        %
-        - \frac{A''}{2A} + \frac{ A'B'}{4AB} +\frac{ A'^2}{4A^2}  + \frac{ B'}{rB}       \\
-        - ½\,B\,\left( - \frac{A''}{AB} + \frac{A'B'}{2AB^2} +\frac{A'^2}{2A^2 B} - \frac{2A'}{rAB} + \frac{2B'}{rB^2} - \frac{2}{r^2 B} + \frac{2}{r^2} \right) = 0 \\
-        \shortintertext{distribute $- ½\,B$}
-        - \frac{A''}{2A} + \frac{ A'B'}{4AB} +\frac{ A'^2}{4A^2} + \frac{B'}{rB}          \\
-        +\frac{A''}{2A} - \frac{A'B'}{4AB} - \frac{A'^2}{4A^2} + \frac{A'}{rA} - \frac{B'}{rB} + \frac{1}{r^2} - \frac{B}{r^2} = 0 \\
-        \shortintertext{cancel opposite terms}
-        \frac{A'}{rA} + \frac{1}{r^2} - \frac{B}{r^2} = 0 \\
-        \shortintertext{multiply remaining terms by r and separate variables}
-        \frac{A'}{A} = \recip{r}B - \recip{r} \\
-        \shortintertext{substitute the value of B derived from the $tt$ field equation}
-        \frac{A'}{A} = \recip{r} \recip{1 - C_1/r} - \recip{r} \\
-        \shortintertext{simplify}
-        \frac{A'}{A} = \recip{r - C_1} - \recip{r} \\
-        \shortintertext{integrate both sides}
-        \int \frac{A'}{A} dr = \int \left( \recip{r - C_1} - \recip{r} \right) dr \\
-        \ln|A| = \ln|r-C_1| - \ln(r) + C_2 \\
-        \shortintertext{raise both sides to e}
-        e^{ \ln|A|} = e^{ (\ln|r-C_1| - \ln(r) + C_2 )} \\
-        \shortintertext{simplify}
-        A = K (r-C_1)\recip{r} \\
-        \shortintertext{distribute 1/r}
-        A = K(1-C_1/r) \\
-        \shortintertext{apply boundary condition $A(∞) = 𝜂_{tt} = -1$ to determine $K=-1$ }
-        \boxed{A = -\,(1 - C_1/r)} \\
-    \end{gather*}
+distribute $-1/2 A$
 
-    %-------------------------------------------------------------------------------------------------------------------
-    \newpage
-    \subsubsection{Solve for $C_1$}
+$
+- A''/(2B) + (A' B')/(4 B^2) + (A'^2)/(4 A B) - A'/(r B) \
++ A''/(2B) - (A' B')/(4 B^2) - (A'^2)/(4 A B) + A'/(r B) - (A B')/(r B^2) + A/(r^2 B) - A/(r^2) = 0
+$
 
-    \paragraph{$A$ and $B$} along with the relationship between them and a derivative.
-    \begin{gather*}
-        A = -\,(1 - C_1/r)     \\
-        B = \recip{1 - C_1/r} \\
-        B = \frac{-1}{A} \\
-        A' = \frac{-C_1}{r^2} \\
-    \end{gather*}
+cancel opposites
 
-    \paragraph{Spacetime Coordinates and Proper Time}
+$ - (A B')/(r B^2) + A/(r^2 B) - A/(r^2) = 0 $
 
-    \begin{gather*}
-        \shortintertext{these are the spherical spacetime coordinates as functions of proper time $𝜏$.
-        The $t$ coordinate is multiplied by $c$ so that all four coordinates will be in $length$ units.}
-        x^𝜇 = (c\,t(𝜏),\, r(𝜏),\, 𝜃(𝜏),\, 𝜑(𝜏)) \\
-        \shortintertext{where $𝜏$ is defined by the following relation}
-        -c^2 d𝜏^2 = ds^2 = g_{\O𝜇 \G𝜈} dx^{\O𝜇} dx^{\G𝜈} \\
-        \shortintertext{For a non moving obj at some distance $r$ from the center of a sphere the coordinates  are}
-        x^𝜇 = (c\,t(𝜏),\, r,\, 𝜃,\, 𝜑 )
-    \end{gather*}
+multiply by $-r/A$ and move the last term to the right hand side
 
+$ B'/B^2 - 1/(r B) = -1/r $
 
-    \paragraph{The Four-Velocity}
+This is a Bernoulli differential equation. Substitute $V=-1/B$ and $V'=B'/B^2$
 
-    \begin{align}
-        \shortintertext{The four-velocity is the ordinary derivative of the spacetime coordinates with respect to proper time.}
-        u^𝜇 = \frac{dx^u}{d𝜏} = \left( \frac{d(ct)}{d𝜏},\, \frac{dr}{d𝜏},\, \frac{d𝜃}{d𝜏},\, \frac{d𝜑}{d𝜏} \right) \\
-        \shortintertext{For a motionless object this reduces to}
-        u^𝜇 = \left( \frac{d(ct)}{d𝜏},\, 0,\, 0,\, 0 \right) \\
-        \shortintertext{Solve for $\frac{d(ct)}{d𝜏}$ of a motionless object using the Schwarzschild metric }
-        -c^2\,d𝜏^2 = g_{\O𝜇 \G𝜈}\,dx^{\O𝜇}\,dx^{\G𝜈} \\
-        -c^2\,d𝜏^2 = A\,(d(ct))^2 + B\,dr^2 + r^2\,d𝜃^2 +  r^2\,\sin^2𝜃 d𝜑
-        \shortintertext{divide both sides by $d𝜏^2$ and recall that in this case the positonal derivatives are zero}
-        -c^2 = A\,\left( \frac{d(ct)}{d𝜏} \right)^2 + B\,\cancelto{0}{\left(\frac{dr}{d𝜏} \right)^2} + r^2\,\cancelto{0}{\left(\frac{d𝜃}{d𝜏} \right)^2} +  r^2\,\sin^2𝜃 \cancelto{0}{\left(\frac{d𝜑}{d𝜏} \right)^2} \\
-    \end{align}
+$ V' + V/r = -1/r $
 
-    \begin{align}
-        \shortintertext{simplify}
-        \frac{d(ct)}{d𝜏} &= \sqrt{\frac{-c^2}{A}} = c\,\sqrt{\frac{-1}{A}}  \\
-        \shortintertext{recall $B=-1/A$}
-        \frac{d(ct)}{d𝜏} &= c\,\sqrt{B}         \label{eq:dt_dtau_B}  \\
-    \end{align}
+compute integrating factor, $e^(∫ 1/r dd(r)) = e^(ln r) = r$, and multiply by it
 
-    \begin{align}
-        \shortintertext{so the four-velocity is}
-        u^𝜇 = \left( c\,\sqrt{B},\, 0,\, 0,\, 0\, \right)
-        \shortintertext{As a check, verify the following invariant}
-        -c^2 ≟ u^𝜇\,u_𝜇 \\
-        -c^2 ≟ g_{tt}\,u^t\,u^t \\
-        -c^2 ≟ A \left(c\,\sqrt{B} \right) \left(c\,\sqrt{B}\right) \\
-        -c^2 ≟ A\, c^2\,B \\
-        \shortintertext{again recalling $B = -1/A$}
-        -c^2 ≡ -c^2 \quad ✓ \\
-    \end{align}
+$
+r V' + V = -1 \
+(r V)' = -1
+$
+
+integrate both sides
+
+$
+∫ (r V)' = - ∫ 1 dd(r) \
+r V = -r + C_1 \
+V = -1 + C_1/r
+$
+
+recall $V = -1/B$ so $B = -1/V$
+
+$
+B = -1/(-1 + C_1/r) \
+boxed(  B = 1/(1 - C_1/r)  ) \
+$
+
+notice that this correctly matches the boundary condition $B(∞) = η_(r r) = 1$
+
+=== The $r r$ Einstein Field Equation
+$ R_(r r) - 1/2 g_(r r) R = 0 $
+
+$ - A'' / (2A) + (A' B') / (4A B) + (A'^2) / (4A^2) + B' / (r B) \
+- 1/2 B (- A'' / (A B) + (A' B') / (2A B^2) + (A'^2) / (2A^2 B) - (2A') / (r A B) + (2B') / (r B^2) - 2 / (r^2 B) + 2 / r^2) = 0 $
+
+distribute $- 1/2 B$
+
+$ - A'' / (2A) + (A' B') / (4A B) + (A'^2) / (4A^2) + B' / (r B) \
++ A'' / (2A) - (A' B') / (4A B) - (A'^2) / (4A^2) + A' / (r A) - B' / (r B) + 1 / r^2 - B / r^2 = 0 $
+
+cancel opposite terms
+
+$ A' / (r A) + 1 / r^2 - B / r^2 = 0 $
+
+multiply remaining terms by $r$ and separate variables
+
+$ A' / A = 1/r B - 1/r $
+
+substitute the value of $B$ derived from the $t t$ field equation
+
+$ A' / A = 1/r 1 / (1 - C_1 / r) - 1/r $
+
+simplify
+
+$ A' / A = 1 / (r - C_1) - 1/r $
+
+integrate both sides
+
+$ integral A' / A dd(r) = integral (1 / (r - C_1) - 1/r) dd(r) $
+
+$ ln|A| = ln|r - C_1| - ln(r) + C_2 $
+
+raise both sides to $e$
+
+$ e^(ln|A|) = e^(ln|r - C_1| - ln(r) + C_2) $
+
+simplify
+
+$ A = K (r - C_1) 1/r $
+
+distribute $1/r$
+
+$ A = K(1 - C_1 / r) $
+
+apply boundary condition $A(infinity) = eta_(t t) = -1$ to determine $K = -1$
+
+$ boxed(A = -(1 - C_1 / r)) $
 
 
-    \paragraph{The Four-Acceleration}
+=== Solve for $C_1$
 
-    \begin{gather*}
-        \shortintertext{The four-acceleration is the Total Covariant Derivative with respect to proper time}
-        a^𝜇 = \frac{Du^𝜇}{D𝜏} = \left( \frac{du^𝜇}{d𝜏} + 𝛤^{𝜇}_{\O𝜈\G𝜌}\,u^{\O𝜈}\,u^{\G𝜌} \right) \\
-        \shortintertext{Compute the four-acceleration for a motionless object in Schwarzchild space. The only non-zero component will be $a^r$.}
-        a^r = \frac{Du^r}{D𝜏} = \left( \cancelto{0}{\frac{du^r}{d𝜏}} + 𝛤^{r}_{\O𝜈\G𝜌}\,u^{\O𝜈}\,u^{\G𝜌} \right)  \\
-        a^r = 𝛤^{r}_{tt}\,u^{t}\,u^{t} \\
-        a^r = \frac{-A'}{2B} \left(c\,\sqrt{B}\right)^2 \\
-        \shortintertext{the $B$s cancel}
-        a^r = \frac{-c^2\,A'}{2} \\
-        \shortintertext{So the four-acceleration is:}
-        a^𝜇 = \left(0,\,\frac{-c^2\,A'}{2},\,0,\,0 \right)
-        \shortintertext{The proper acceleration is the acceleration measured by an accelerometer. It is given by the following:}
-        𝛼 = \sqrt{a^{\O𝜇}\,a_{\O𝜇}} = \sqrt{ g_{\O𝜇 \G𝜈}\,a^{\O𝜇}\,a^{\G𝜈}}
-        \shortintertext{For Schwarschild, since only $a^r$ is non zero, this reduces to}
-        𝛼 =\sqrt{a^r\,a_r} = \sqrt{g_{rr}\,a^r\,a^r} \\
-        𝛼 = a^r\,\sqrt{g_{rr}} \\
-        \shortintertext{substitute in the equations for $a^r$ and $g_{rr}$}
-        𝛼 = \frac{-c^2\,A'}{2}\,\sqrt{B} \\
-        \shortintertext{and then subsitute in the equations $A'$ and $B$}
-        𝛼 = \frac{c^2\,C_1}{2\,r^2}\,\sqrt{ \recip{1 - C_1/r}}
-        \shortintertext{Newtons law of universal gravitation is}
-        F = \frac{G\,M\,m}{r^2}
-        \shortintertext{divide by $m$ to get Newtonian gravitational acceleration}
-        a = \frac{G\,M}{r^2}
-        \shortintertext{Make Schwarschild GR proper acceleration approximate Newtonian graviatational acceleration.}
-        \frac{G\,M}{r^2} ≈  \frac{c^2\,C_1}{2\,r^2} \sqrt{ \recip{1 - C_1/r}}
-        \shortintertext{Guess that $C_1/r « 1$}
-        \frac{G\,M}{r^2} ≈ \frac{c^2\,C_1}{2\,r^2} \cancelto{1}{\sqrt{ \recip{1 - \cancelto{«1}{C_1/r}}}} \\
-        \shortintertext{solve for $C_1$}
-        C_1 ≈ \frac{2\,G\,M}{c^2} \\
-        \shortintertext{At the surface of the earth $C_1/r = 1.4 \times 10^{-9}$ which is $«1$.
-        And Actually, since $G$ is measured and GR is the more accurate representations of reality, this is the exact value of $C_1$.}
-        C_1 = \frac{2\,G\,M}{c^2} \\
-        \shortintertext{Substituting $C_1$ into the equation for proper acceleration gives the exact GR equation.}
-        𝛼 = \frac{G\,M}{r^2} \sqrt{ \recip{1 - \frac{2\,G\,M}{c^2\,r}}} \\
-        \shortintertext{Which means the Newtonian equation is the approximation.}
-        a ≈ \frac{G\,M}{r^2}
-        \shortintertext{substitute $C_1$ into $A$ and $B$}
-        \boxed{A = -\left(1 - \frac{2\,G\,M}{c^2\,r}\right)\quad B = \recip{1 - \frac{2\,G\,M}{c^2\,r}} } \\
-    \end{gather*}
+*A and B* along with the relationship between them and a derivative.
 
-    \subsection{The Schwarzschild Metric}
-    \[
-        g_{𝜇𝜈} =
-        \begin{bmatrix}
-            -\left(1 - \frac{2\,G\,M}{c^2\,r}\right) & 0                                  & 0   & 0           \\
-            0                                        & \recip{1 - \frac{2\,G\,M}{c^2\,r}} & 0   & 0           \\
-            0                                        & 0                                  & r^2 & 0           \\
-            0                                        & 0                                  & 0   & r^2\,\sin^2𝜃
-        \end{bmatrix}
-    \]
+$ A = -(1 - C_1/r) $
+$ B = 1 / (1 - C_1/r) $
+$ B = -1/A $
+$ A' = -C_1 / r^2 $
 
-    \subsection{The Christoffel Symbols}
+*Spacetime Coordinates and Proper Time*
 
-    \begin{gather*}
-        B = \frac{-1}{A}     \\
-        B' = \frac{A'}{A^2}
-    \end{gather*}
+These are the spherical spacetime coordinates as functions of proper time $𝜏$.
+The $t$ coordinate is multiplied by $c$ so that all four coordinates will be in length units.
 
-    Use the above to eliminate $B$ and $B'$ from these Christoffel Symbols.
+$ x^𝜇 = (c t(𝜏), r(𝜏), 𝜃(𝜏), 𝜑(𝜏)) $
 
-    \begin{alignat*}{2}
-        𝛤^r_{tt}            &= \frac{-A'}{2B}  = \frac{A\,A'}{2}    \\
-        𝛤^r_{rr}            &= \frac{ B'}{2B}  = \frac{\frac{A'}{A^2}}{2\frac{-1}{A}} = \frac{-A'}{2A}      \\
-        𝛤^r_{𝜃𝜃}            &= \frac{-r}{B} = A\,r                  \\
-        𝛤^r_{𝜑𝜑}            &= \frac{-r\,\sin^2𝜃}{B} = A\,r\,\sin^2𝜃  \\
-    \end{alignat*}
+where $𝜏$ is defined by the following relation
 
-    And then substitute,
+$ -c^2 dd(𝜏)^2 = dd(s)^2 = g_(O𝜇 G𝜈) dd(x)^O𝜇 dd(x)^G𝜈 $
 
-    \begin{gather*}
-        A = -\left(1 - \frac{2\,G\,M}{c^2\,r}\right)     \\
-        A' = \frac{-2\,G\,M}{c^2\,r^2}
-    \end{gather*}
+For a non moving obj at some distance $r$ from the center of a sphere the coordinates are
 
-    into the Christoffel Symbols and do a little simplification and reordering
+$ x^𝜇 = (c t(𝜏), r, 𝜃, 𝜑) $
 
-    \begin{align*}
-        𝛤^t_{tr} = 𝛤^t_{rt} &= \frac{ A'}{2A}  = \frac{\left(  \frac{-2\,G\,M}{c^2\,r^2} \right)}{2\,\left[-\left(1 - \frac{2\,G\,M}{c^2\,r}\right)\right]}  = \frac{G\,M}{r^2}\,\left( \recip{c^2\,\left(1 - \frac{2\,G\,M}{c^2\,r}\right) }\right)       \\
-        𝛤^r_{tt}            &= \frac{A\,A'}{2} = \frac{-\,\left( 1 - \frac{2\,G\,M}{c^2\,r}\right)\,\left(  \frac{-2\,G\,M}{c^2\,r^2} \right)}{2} = \frac{G\,M}{r^2} \left( \frac{ 1 - \frac{2\,G\,M}{c^2\,r} }{c^2}\right)   \\
-        𝛤^r_{rr}            &= \frac{-A'}{2A}  = -\,𝛤^t_{tr}= -\,\frac{G\,M}{r^2}\,\left( \recip{c^2\,\left(1 - \frac{2\,G\,M}{c^2\,r}\right) }\right)\\
-        𝛤^r_{𝜃𝜃}            &= A\,r            = -\,\left( 1 - \frac{2\,G\,M}{c^2\,r} \right)\,r  = -\,r\,\left( 1 - \frac{2\,G\,M}{c^2\,r} \right)                \\
-        𝛤^r_{𝜑𝜑}            &=  A\,r\,\sin^2𝜃 = -\,\left( 1 - \frac{2\,G\,M}{c^2\,r}\right) \,r\,\sin^2𝜃 = -\,r\,\sin^2𝜃\,\left( 1 - \frac{2\,G\,M}{c^2\,r}\right) \\
-    \end{align*}
+*The Four-Velocity*
 
-    \newcommand{\pos}{\mathmakebox[\widthof{$-\,$}]{}}
+The four-velocity is the ordinary derivative of the spacetime coordinates with respect to proper time.
 
-    Finally here are the Schwarzschild Christoffel symbols:
+$ u^𝜇 = (dd(x)^𝜇) / (dd(𝜏)) = ( (dd((c t))) / (dd(𝜏)), (dd(r)) / (dd(𝜏)), (dd(𝜃)) / (dd(𝜏)), (dd(𝜑)) / (dd(𝜏)) ) $
 
-    \begin{align*}
-        𝛤^t_{tr} = 𝛤^t_{rt} &= \pos \frac{G\,M}{r^2}\,\left( \recip{c^2\,\left(1 - \frac{2\,G\,M}{c^2\,r}\right) }\right)       \\
-        𝛤^r_{tt}            &= \pos \frac{G\,M}{r^2} \left( \frac{ 1 - \frac{2\,G\,M}{c^2\,r} }{c^2}\right)   \\
-        𝛤^r_{rr}            &=  -\, \frac{G\,M}{r^2}\,\left( \recip{c^2\,\left(1 - \frac{2\,G\,M}{c^2\,r}\right) }\right)\\
-        𝛤^r_{𝜃𝜃}            &=  -\, r\,\left( 1 - \frac{2\,G\,M}{c^2\,r} \right)                \\
-        𝛤^r_{𝜑𝜑}            &=  -\, r\,\sin^2𝜃\,\left( 1 - \frac{2\,G\,M}{c^2\,r}\right) \\
-        𝛤^𝜃_{𝜃r} = 𝛤^𝜃_{r𝜃} &= \pos \recip{r}    \\
-        𝛤^𝜃_{𝜑𝜑}            &= -\,  \sin𝜃\,\cos𝜃\\
-        𝛤^𝜑_{𝜑r} = 𝛤^𝜑_{r𝜑} &= \pos \recip{r}  \\
-        𝛤^𝜑_{𝜑𝜃} = 𝛤^𝜑_{𝜃𝜑} &= \pos \cot𝜃 \\
-    \end{align*}
+For a motionless object this reduces to
 
-    \subsubsection{The Ricci Tensor is Zero}
+$ u^𝜇 = ( (dd((c t))) / (dd(𝜏)), 0, 0, 0 ) $
 
-    Previously, I noted that the Ricci tensor is zero, but I was not yet convinced of that fact.
-    We will now use the following relationships to show that it is indeed equal to zero.
+Solve for $(dd((c t))) / (dd(𝜏))$ of a motionless object using the Schwarzschild metric
 
-    \begin{gather*}
-        B = -\,\frac{1}{A}                       \\
-        B' = \frac{A'}{A^2}                     \\
-        A = -\,\left(1 - \frac{C_1}{r} \right)   \\
-        A' = -\,\frac{C_1}{r^2}                 \\
-        A'' = \frac{2\,C_1}{r^3}                 \\
-    \end{gather*}
+$ -c^2 dd(𝜏)^2 = g_(O𝜇 G𝜈) dd(x)^O𝜇 dd(x)^G𝜈 $
+// Todo: add a expanded highligh of the metric and derivatives
+$ -c^2 dd(𝜏)^2 = A (dd((c t)))^2 + B dd(r)^2 + r^2 dd(𝜃)^2 + r^2 sin^2 𝜃 dd(𝜑) $
 
-    \paragraph{Ricci Tensor $R_{tt}$}
+divide both sides by $dd(𝜏)^2$ and recall that in this case the positional derivatives are zero
 
-    \begin{gather*}
-        \shortintertext{start with the equation we derived previously:}
-        R_{tt} = \frac{-A''}{2B} + \frac{A'B'}{4B^2} + \frac{A'^2}{4AB} + \frac{-A'}{rB}          \\
-        \shortintertext{substitute in $B$ and $B'$ to get everything in terms of $A$ and its derivatives}
-        R_{tt} = \frac{A\,A''}{2} + \frac{A^2\,A'^2}{4A^2} -\frac{A\, A'^2}{4A} + \frac{A\,A'}{r} \\
-        \shortintertext{cancel the $A$s in the middle terms}
-        R_{tt} = \frac{A\,A''}{2} + \frac{A'^2}{4} -\frac{A'^2}{4} + \frac{A\,A'}{r}               \\
-        \shortintertext{eliminate the middle terms because they are equal and opposite}
-        R_{tt} = \frac{A\,A''}{2} + \frac{A\,A'}{r}                                                \\
-        \shortintertext{factor out an $A$}
-        R_{tt} = A\,\left(\frac{A''}{2} + \frac{A'}{r} \right)                                     \\
-        \shortintertext{substitute in the equations for $A'$ and $A''$}
-        R_{tt} = A\,\left(\frac{2\,C_1}{2\,r^3} + \frac{-C_1}{r^2\,r} \right) = A\,\left(\frac{C_1}{r^3} - \frac{C_1}{r^3} \right)  =A \cdot 0                  \\
-        R_{tt} = 0
-    \end{gather*}
+$ -c^2 = A ((dd((c t))) / (dd(𝜏)))^2 + B cancel(((dd(r)) / (dd(𝜏)))^2) + r^2 cancel(((dd(𝜃)) / (dd(𝜏)))^2) + r^2 sin^2 𝜃 cancel(((dd(𝜑)) / (dd(𝜏)))^2) $
+
+simplify
+
+$ (dd((c t))) / (dd(𝜏)) = sqrt((-c^2) / A) = c sqrt(-1/A) $
+
+recall $B = -1/A$
+
+$ (dd((c t))) / (dd(𝜏)) = c sqrt(B) $ <eq:dt_dtau_B>
+
+so the four-velocity is
+
+$ u^𝜇 = ( c sqrt(B), 0, 0, 0 ) $
+
+As a check, verify the following invariant
+
+$ -c^2 ≟ u^O𝜇 u_O𝜇 $
+$ -c^2 ≟ g_(t t) u^t u^t $ // TODO: add highlight color to the two ts
+$ -c^2 ≟ A (c sqrt(B)) (c sqrt(B)) $
+$ -c^2 ≟ A c^2 B $
+
+again recalling $B = -1/A$
+
+$ -c^2 equiv -c^2 quad checkmark $
+
+*The Four-Acceleration*
+
+#let O𝜈 = Orange[𝜈]
+#let G𝜌 = Green[𝜌]
+
+The four-acceleration is the Total Covariant Derivative with respect to proper time
+
+$ a^𝜇 = Dd(𝜏, u^𝜇) = ( (dd(u)^𝜇) / (dd(𝜏)) + 𝛤^𝜇_(O𝜈 G𝜌) u^O𝜈 u^G𝜌 ) $
 
 
-    \paragraph{Ricci Tensor $R_{rr}$}
+Compute the four-acceleration for a motionless object in Schwarzchild space. The only non-zero component will be $a^r$.
 
-    \begin{gather*}
-        \shortintertext{Start with the equation we derived previously:}
-        R_{rr} = \frac{-A''}{2A} + \frac{ A'B'}{4AB} +\frac{ A'^2}{4A^2}  + \frac{ B'}{rB}          \\
-        \shortintertext{substitute in $B'/B$ to get everything in terms of $A$ and its derivatives}
-        R_{rr} = \frac{-A''}{2A} - \frac{A'^2}{4A^2} +\frac{A'^2}{4A^2} - \frac{A'}{rA} \\
-        \shortintertext{eliminate the middle terms because they are equal and opposite}
-        R_{rr} = \frac{-A''}{2A} - \frac{A'}{rA}                                                \\
-        \shortintertext{factor out a $-1/A$}
-        R_{rr} = -\recip{A}\,\left(\frac{A''}{2} + \frac{A'}{r} \right)                                     \\
-        \shortintertext{notice that the term in parenthesis is zero as show above in the $R_{tt}$ section}
-        R_{rr} = -\recip{A} \cdot 0  \\
-        R_{rr} = 0
-    \end{gather*}
+$ a^r = Dd(𝜏, u^r) = ( cancel((dd(u)^r) / (dd(𝜏))) + 𝛤^r_(O𝜈 G𝜌) u^O𝜈 u^G𝜌 ) $
+$ a^r = 𝛤^r_(t t) u^t u^t $ // TODO: add highlight color to the two ts
+$ a^r = (-A') / (2B) (c sqrt(B))^2 $
 
+the $B$s cancel
 
-    \paragraph{Ricci Tensor $R_{𝜃𝜃}$ equals zero}
+$ a^r = (-c^2 A') / 2 $
 
-    \begin{gather*}
-        \shortintertext{Start with the equation we derived previously:}
-        R_{𝜃𝜃} = \frac{-rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + 1  \\
-        \shortintertext{substitute in $B$ and $B'/B$ to get everything in terms of $A$ and its derivatives}
-        R_{𝜃𝜃} =  \frac{r\,A\,A'}{2A} + \frac{r\,A\,A'}{2A} + A + 1 \\
-        \shortintertext{simplify}
-        R_{𝜃𝜃} = r\,A' + A + 1                          \\
-        \shortintertext{substitute in $A'$ and A}
-        R_{𝜃𝜃} =  r\,\frac{-C_1}{r^2} - \left(1 - \frac{C_1}{r} \right) + 1 \\
-        \shortintertext{simplify}
-        R_{𝜃𝜃} = -\,\frac{C_1}{r} - 1 + \frac{C_1}{r} + 1 \\
-        \shortintertext{first two terms are equal and opposite of last two terms}
-        R_{𝜃𝜃} = 0
-    \end{gather*}
+So the four-acceleration is:
 
-    \paragraph{Ricci Tensor $R_{𝜑𝜑}$ equals zero}
-    \begin{gather*}
-        \shortintertext{start with the equation we derived previously:}
-        R_{𝜑𝜑} = \sin^2𝜃 \left( \frac{-rA'}{2AB} + \frac{rB'}{2B^2} + \frac{-1}{B} + 1 \right)
-        \shortintertext{note that this the term in parentheses equals $R_{𝜃𝜃}$}
-        R_{𝜑𝜑} = \sin^2𝜃 \left( R_{𝜃𝜃} \right) = \sin^2𝜃 \cdot 0\\
-        R_{𝜑𝜑} = 0
-    \end{gather*}
+$ a^𝜇 = (0, (-c^2 A') / 2, 0, 0) $
 
-    This shows that for the Schwarzschild Metric the Ricci Tensor is zero.
-    Which also means that the Ricci scalar is zero.
+The proper acceleration $𝛼$ is given by:
 
+$ 𝛼 = sqrt(a^O𝜇 a_O𝜇) = sqrt(g_(O𝜇 G𝜈) a^O𝜇 a^G𝜈) $
 
-\end{document}
+For Schwarschild, since only $a^r$ is non zero, this reduces to
+
+$ 𝛼 = sqrt(a^r a_r) = sqrt(g_(r r) a^r a^r) $
+$ 𝛼 = a^r sqrt(g_(r r)) $
+
+substitute in the equations for $a^r$ and $g_(r r)$
+
+$ 𝛼 = (-c^2 A') / 2 sqrt(B) $
+
+and then subsitute in the equations $A'$ and $B$
+
+$ 𝛼 = (c^2 C_1) / (2 r^2) sqrt(1 / (1 - C_1/r)) $
+
+Newtons law of universal gravitation is
+
+$ F = (G M m) / r^2 $
+
+divide by $m$ to get Newtonian gravitational acceleration
+
+$ a = (G M) / r^2 $
+
+Make Schwarschild GR proper acceleration approximate Newtonian gravitational acceleration.
+
+$ (G M) / r^2 approx (c^2 C_1) / (2 r^2) sqrt(1 / (1 - C_1/r)) $
+
+Guess that $C_1/r << 1$
+
+// TODO: cancelto 1
+$ (G M) / r^2 approx (c^2 C_1) / (2 r^2) cancel(sqrt(1 / (1 - cancel(C_1/r)))) $
+
+solve for $C_1$
+
+$ C_1 approx (2 G M) / c^2 $
+
+At the surface of the earth $C_1/r = 1.4 times 10^(-9)$ which is $<< 1$.
+And Actually, since $G$ is measured and GR is the more accurate representations of reality, this is the exact value of $C_1$.
+
+$ C_1 = (2 G M) / c^2 $
+
+Substituting $C_1$ into the equation for proper acceleration gives the exact GR equation.
+
+$ 𝛼 = (G M) / r^2 sqrt(1 / (1 - (2 G M) / (c^2 r))) $
+
+Which means the Newtonian equation is the approximation.
+
+$ a approx (G M) / r^2 $
+
+substitute $C_1$ into $A$ and $B$
+
+$ boxed(A = -(1 - (2 G M) / (c^2 r)) quad B = 1 / (1 - (2 G M) / (c^2 r))) $
+
+=== The Schwarzschild Metric
+
+$ g_(𝜇 𝜈) = diag4(
+    -(1 - (2 G M) / (c^2 r)),
+    1 / (1 - (2 G M) / (c^2 r)),
+    r^2,
+    r^2 sin^2 𝜃
+) $
+
+=== The Christoffel Symbols
+
+$ B = -1/A $
+$ B' = A' / A^2 $
+
+Use the above to eliminate $B$ and $B'$ from these Christoffel Symbols.
+
+$ 𝛤^r_(t t) &= (-A') / (2B) = (A A') / 2 \
+  𝛤^r_(r r) &= B' / (2B)   = (A' / A^2) / (2 (-1/A)) = (-A') / (2A) \
+  𝛤^r_(𝜃 𝜃) &= -r / B      = A r \
+  𝛤^r_(𝜑 𝜑) &= (-r sin^2 𝜃) / B = A r sin^2 𝜃 $
+
+And then substitute,
+
+$ A = -(1 - (2 G M) / (c^2 r)) \
+  A' = (-2 G M) / (c^2 r^2) $
+
+into the Christoffel Symbols and do a little simplification and reordering:
+
+$ 𝛤^t_(t r) = 𝛤^t_(r t) = A' / (2A) = ( (-2 G M) / (c^2 r^2) ) / (2 [-(1 - (2 G M) / (c^2 r))]) = (G M) / r^2 ( 1 / (c^2 (1 - (2 G M) / (c^2 r))) ) $
+
+$ 𝛤^r_(t t) = (A A') / 2 = (- (1 - (2 G M) / (c^2 r)) ( (-2 G M) / (c^2 r^2) )) / 2 = (G M) / r^2 ( (1 - (2 G M) / (c^2 r)) / c^2 ) $
+
+$ 𝛤^r_(r r) = (-A') / (2A) = -𝛤^t_(t r) = -(G M) / r^2 ( 1 / (c^2 (1 - (2 G M) / (c^2 r))) ) $
+
+$ 𝛤^r_(𝜃 𝜃) = A r = -(1 - (2 G M) / (c^2 r)) r = -r (1 - (2 G M) / (c^2 r)) $
+
+$ 𝛤^r_(𝜑 𝜑) = A r sin^2 𝜃 = -(1 - (2 G M) / (c^2 r)) r sin^2 𝜃 = -r sin^2 𝜃 (1 - (2 G M) / (c^2 r)) $
+
+Finally here are the Schwarzschild Christoffel symbols:
+
+$
+  𝛤^t_(t r) = 𝛤^t_(r t) &= && (G M) / r^2 ( 1 / (c^2 (1 - (2 G M) / (c^2 r))) ) \
+  𝛤^r_(t t)            &= && (G M) / r^2 ( (1 - (2 G M) / (c^2 r)) / c^2 ) \
+  𝛤^r_(r r)            &= - && (G M) / r^2 ( 1 / (c^2 (1 - (2 G M) / (c^2 r))) ) \
+  𝛤^r_(𝜃 𝜃)            &= - && r (1 - (2 G M) / (c^2 r)) \
+  𝛤^r_(𝜑 𝜑)            &= - && r sin^2 𝜃 (1 - (2 G M) / (c^2 r)) \
+  𝛤^𝜃_(𝜃 r) = 𝛤^𝜃_(r 𝜃) &= && 1/r \
+  𝛤^𝜃_(𝜑 𝜑)            &= - && sin 𝜃 cos 𝜃 \
+  𝛤^𝜑_(𝜑 r) = 𝛤^𝜑_(r 𝜑) &= && 1/r \
+  𝛤^𝜑_(𝜑 𝜃) = 𝛤^𝜑_(𝜃 𝜑) &= && cot 𝜃
+$
+=== The Ricci Tensor is Zero
+
+Previously, I noted that the Ricci tensor is zero, but I was not yet convinced of that fact. We will now use the following relationships to show that it is indeed equal to zero.
+
+$ B = -1/A $
+$ B' = A' / A^2 $
+$ A = -(1 - C_1/r) $
+$ A' = -C_1 / r^2 $
+$ A'' = (2 C_1) / r^3 $
+
+==== Ricci Tensor $R_(t t)$
+
+Start with the equation we derived previously:
+$ R_(t t) = - (A'') / (2B) + (A' B') / (4B^2) + (A'^2) / (4A B) - (A') / (r B) $
+
+Substitute in $B$ and $B'$ to get everything in terms of $A$ and its derivatives:
+$ R_(t t) = (A A'') / 2 + (A^2 A'^2) / (4 A^2) - (A A'^2) / (4 A) + (A A') / r $
+
+Cancel the $A$s in the middle terms:
+$ R_(t t) = (A A'') / 2 + A'^2 / 4 - A'^2 / 4 + (A A') / r $
+
+Eliminate the middle terms because they are equal and opposite:
+$ R_(t t) = (A A'') / 2 + (A A') / r $
+
+Factor out an $A$:
+$ R_(t t) = A ((A'') / 2 + A' / r) $
+
+Substitute in the equations for $A'$ and $A''$:
+$ R_(t t) = A ((2 C_1) / (2 r^3) + (-C_1) / (r^2 r)) = A (C_1 / r^3 - C_1 / r^3) = A dot 0 $
+$ R_(t t) = 0 $
+
+==== Ricci Tensor $R_(r r)$
+
+Start with the equation we derived previously:
+$ R_(r r) = - (A'') / (2A) + (A' B') / (4 A B) + A'^2 / (4 A^2) + B' / (r B) $
+
+Substitute in $B'/B$ to get everything in terms of $A$ and its derivatives:
+$ R_(r r) = -(A'') / (2A) - A'^2 / (4 A^2) + A'^2 / (4 A^2) - A' / (r A) $
+
+Eliminate the middle terms because they are equal and opposite:
+$ R_(r r) = -(A'') / (2A) - A' / (r A) $
+
+Factor out a $-1/A$:
+$ R_(r r) = -1/A ((A'') / 2 + A' / r) $
+
+Notice that the term in parenthesis is zero as shown above in the $R_(t t)$ section:
+$ R_(r r) = -1/A dot 0 $
+$ R_(r r) = 0 $
+
+==== Ricci Tensor $R_(𝜃 𝜃)$ equals zero
+
+Start with the equation we derived previously:
+$ R_(𝜃 𝜃) = -(r A') / (2 A B) + (r B') / (2 B^2) - 1 / B + 1 $
+
+Substitute in $B$ and $B'/B$ to get everything in terms of $A$ and its derivatives:
+$ R_(𝜃 𝜃) = (r A A') / (2 A) + (r A A') / (2 A) + A + 1 $
+
+Simplify:
+$ R_(𝜃 𝜃) = r A' + A + 1 $
+
+Substitute in $A'$ and $A$:
+$ R_(𝜃 𝜃) = r ((-C_1) / r^2) - (1 - C_1/r) + 1 $
+
+Simplify:
+$ R_(𝜃 𝜃) = -C_1 / r - 1 + C_1 / r + 1 $
+$ R_(𝜃 𝜃) = 0 $
+
+==== Ricci Tensor $R_(𝜑 𝜑)$ equals zero
+
+Start with the equation we derived previously:
+$ R_(𝜑 𝜑) = sin^2 𝜃 ( -(r A') / (2 A B) + (r B') / (2 B^2) - 1/B + 1 ) $
+
+Note that the term in parentheses equals $R_(𝜃 𝜃)$:
+$ R_(𝜑 𝜑) = sin^2 𝜃 (R_(𝜃 𝜃)) = sin^2 𝜃 dot 0 $
+$ R_(𝜑 𝜑) = 0 $
+
+This shows that for the Schwarzschild Metric the Ricci Tensor is zero. Which also means that the Ricci scalar is zero.

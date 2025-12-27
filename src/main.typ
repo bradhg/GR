@@ -31,7 +31,7 @@
 #set heading(numbering: "1.") // Heading number format  arabic numerals seperated by .
 
 #include "EinsteinFieldEquations.typ"
-//#include "SchwarzschildMetricDerivation.typ"
+#include "SchwarzschildMetricDerivation.typ"
 //#include "SchwarzschildMetricApplications.typ"
 
 

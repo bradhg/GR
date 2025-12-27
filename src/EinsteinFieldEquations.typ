@@ -1,4 +1,4 @@
-#import "@preview/physica:0.9.7": dd
+
 #import "utils.typ" : *
 
 = The Einstein Field Equations
@@ -14,10 +14,11 @@
           align: vHorizon((center, left, left, left)),
           inset: (6pt, 10pt),
           stroke: none,
-
+          table.header(
           table.hline(stroke: 0.8pt),
           [*Sybmbol*], [*Name*],                   [*Quantity*],            [*Dimensions*],
           table.hline(stroke: 0.5pt),
+          ),
 
           [$R_(𝜇 𝜈)$], [Ricci tensor],             [curvature],              [$L^(-2)$],
           [$g_(𝜇 𝜈)$], [Metric tensor],            [dimensionless],          [—],
