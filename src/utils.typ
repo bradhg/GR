@@ -1,0 +1,233 @@
+//
+// Copyright 2025 Brad Garn
+//
+
+#import "@preview/physica:0.9.7": dd, dv
+#import "@preview/mannot:0.3.1": mark, markhl, markrect
+
+//--------------------------------------------------------------------------------------------------
+// util to make all rows in a table have have horizon veritical allignment
+// @param cols -  array of horizontal allignmentsi'
+// @return array with vertical allignment horizon added to each element
+#let vHorizon(cols) = cols.map(hAlignment => hAlignment + horizon)
+
+//--------------------------------------------------------------------------------------------------
+// define colors used in the document
+//#let myteal   = rgb(0, 119, 136)
+//#let myblue   = rgb(0, 92, 230)
+#let mygreen  = rgb(0, 150, 0)
+#let myorange = rgb(230, 97, 0)
+
+//--------------------------------------------------------------------------------------------------
+// Create colored symbols
+//    using the "punctuation" variant makes it so you can
+//    write $g_(O𝜇 T𝜈)$ and there will be no spacee between 𝜇 and 𝜈
+#let Orange(content) = math.class("punctuation", text(fill: myorange)[#content])
+//#let Teal(  content) = math.class("punctuation", text(fill: myteal  )[#content])
+#let Green( content) = math.class("punctuation", text(fill: mygreen )[#content])
+
+#let O𝜇 = Orange[𝜇]
+#let G𝜈 = Green[𝜈]
+
+
+//--------------------------------------------------------------------------------------------------
+// partial differential of f
+// @param wrt - with respect to
+// @param f - function
+#let pd(
+    wrt,
+    f
+) = $upright(∂)_#wrt #f$
+
+
+//--------------------------------------------------------------------------------------------------
+// partial differential of g_(i1 i2)
+#let pg(
+    wrt,
+    i1,
+    i2
+) = {
+    $pd( #wrt, g_(#i1 #i2) )$
+}
+
+
+//--------------------------------------------------------------------------------------------------
+// zerored partial differential of g_(i1 i2)
+//   currently just draws a slash through it
+//   would like to have it be an arrow to 0
+#let pgz(
+    wrt,
+    i1,
+    i2
+) = {
+    $cancel(pd( #wrt, g_(#i1 #i2) ))$
+}
+
+//--------------------------------------------------------------------------------------------------
+// Total Derivative
+// @param wrt - with respect to
+// @param f - function
+#let Dd(
+   wrt,
+   f
+) = $(upright(D) #f)/(upright(D) #wrt)$
+
+
+//--------------------------------------------------------------------------------------------------
+// An equation with a right justified note
+#let eqNote(equation, note) = grid(
+  columns: (1fr, auto, 1fr),
+  align: vHorizon((center, center, right )),
+  rows: 1,
+  [], // left column empty
+  equation,
+  text(note, size: 0.9em, fill: gray),
+)
+
+//--------------------------------------------------------------------------------------------------
+// lr (left-right) with built in parens scaled to 200%
+// ie. big parens
+#let lr2(body) = math.lr($(body)$, size: 200%)
+
+//--------------------------------------------------------------------------------------------------
+// Creates three function for creating visual variants of a single-index Einstein-notation expression
+//
+// Given a `base` function that produces math content from an index (e.g. Γ^(index)_(t t)),
+// it returns a tuple of functions:
+//
+//   m(index): normal marked index (colored glyph, no highlight)
+//   h(index): highlighted index (colored glyph with background highlight)
+//   c(index): canceled version of the highlighted form
+//
+// This is intended for pedagogical derivations where one index is being tracked,
+// summed over, or eliminated step-by-step, while keeping the mathematical structure
+// identical across variants.
+#let makeVariants1(
+  base,                   // function (index) → math content
+  color: myorange,        // color applied to the index glyph
+  hl_lighten: 40%,        // amount to lighten the color of the highlight background
+  hl_radius: 1pt,         // corner radius of the highlight background
+) = {
+
+  let sm = (idx) => mark(idx, color: color)
+  let sh = (idx) => markhl(idx, color: color.lighten(hl_lighten), radius: hl_radius)
+
+  let m(index) = base(sm(index))
+  let h(index) = base(sh(index))
+  let c(index) = math.cancel(h(index))
+
+  (m, h, c)
+}
+
+
+//--------------------------------------------------------------------------------------------------
+// Creates three function for creating visual variants of a 2-index Einstein-notation expression
+//   See makeVariatns1 for details
+#let makeVariants2(
+  base,                     //  function (i1,i2) → math content
+  color1: myorange,         //  color applied to the index1 glyph
+  color2: mygreen,          //  color applied to the index2 glyph
+  hl_lighten: 40%,          //  amount to lighten the color of the highlight background
+  hl_radius: 1pt,           //  corner radius of the highlight background
+) = {
+  let s1m = (idx) => mark(idx, color: color1)
+  let s2m = (idx) => mark(idx, color: color2)
+  let s1h = (idx) => markhl(idx, color: color1.lighten(hl_lighten), radius: hl_radius)
+  let s2h = (idx) => markhl(idx, color: color2.lighten(hl_lighten), radius: hl_radius)
+
+  let m(i1, i2) = base(s1m(i1), s2m(i2))
+  let h(i1, i2) = base(s1h(i1), s2h(i2))
+  let c(i1, i2) = math.cancel(h(i1, i2))
+
+  (m, h, c)
+}
+
+//--------------------------------------------------------------------------------------------------
+// create a 4x4 diagonal matrix
+#let diag4(i11, i22, i33, i44) = $mat(
+  i11,   0,   0,   0;
+    0, i22,   0,   0;
+    0,   0, i33,   0;
+    0,   0,   0, i44)$
+
+//--------------------------------------------------------------------------------------------------
+// shrik content to fit in enclosing width
+#let shrinkToWidth(body) = {
+    layout(size => {
+        let natural = measure(body).width
+        let max = size.width
+        if natural > max {
+            let factor = max / natural * 100%
+            scale(factor, body)
+        }else{
+            scale( 100%, body)
+        }
+    })
+}
+
+//--------------------------------------------------------------------------------------------------
+// Draw a box around an equation
+#let boxed(body) = markrect(
+    body,
+    stroke: 1pt,
+    radius:4pt,
+    outset:0.5em
+)
+
+//--------------------------------------------------------------------------------------------------
+// format a number
+#let fmt(
+    val,            // the number to format
+    digits: 2,      // the number of digits after the decimal point
+    commas: false   // commas as thousand separator
+) = {
+  let rounded = calc.round(val, digits: digits)
+  let s = str(calc.abs(rounded))
+
+  // Split integer and decimal
+  let parts = s.split(".")
+  let int-part = parts.at(0)
+  let actual-dec = if parts.len() > 1 { parts.at(1) } else { "" }
+
+  // 1. Padding Logic: Ensure we have exactly 'digits' characters
+  let dec-part = if digits > 0 {
+    "." + actual-dec + ("0" * (digits - actual-dec.len()))
+  } else {
+    ""
+  }
+
+  // 2. Comma logic
+  let formatted-int = if commas {
+    int-part.clusters()
+      .rev()
+      .enumerate()
+      .map(((i, d)) => if i != 0 and calc.rem(i, 3) == 0 { d + "," } else { d })
+      .rev()
+      .join()
+  } else {
+    int-part
+  }
+
+  [#if rounded < 0 { $minus$ }#formatted-int#dec-part]
+}
+
+//--------------------------------------------------------------------------------------------------
+// Format seconds with units add
+#let formatSecondsAuto(
+  seconds,
+  digits: 1
+  // TODO: add option to not align units to widest
+) = context {
+  let s = calc.abs(seconds)
+
+  let units = ([s], [ms], [μs], [ns], [ps])
+  let widest = calc.max(..units.map(u => measure(u).width))
+
+  let (val, units) = if s >= 1 or s == 0 { (seconds, [s]) }
+    else if s >= 1e-3 { (seconds * 1e3, [ms]) }
+    else if s >= 1e-6 { (seconds * 1e6, [μs]) }
+    else if s >= 1e-9 { (seconds * 1e9, [ns]) }
+    else              { (seconds * 1e12, [ps]) }
+
+  [#fmt(val, digits: digits) #box(width: widest, align(left)[#units])]
+}
