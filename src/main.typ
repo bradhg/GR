@@ -12,12 +12,17 @@
 
 #set page( paper: "us-letter" )
 
-#show math.equation: set text(
-    font: "STIX Two Math",
-    size:1.2em
-)
+#show math.equation: set text( font: "STIX Two Math" )
+#show math.equation.where(block: true): set text(size: 1.2em)
 
 #set list(indent: 1.5em)
+
+// make table headers (row 0) bold
+#show table.cell.where(y:0): it => {
+  set text(weight: "bold")
+  show math.equation: set text(stroke: 0.02em) // fake bold for math - works for greek unicode
+  it
+}
 
 //--------------------------------------------------------------------------------------------------
 #include "FrontMatter.typ"
@@ -32,7 +37,7 @@
 
 #include "EinsteinFieldEquations.typ"
 #include "SchwarzschildMetricDerivation.typ"
-//#include "SchwarzschildMetricApplications.typ"
+#include "SchwarzschildMetricApplications.typ"
 
 
 //--------------------------------------------------------------------------------------------------

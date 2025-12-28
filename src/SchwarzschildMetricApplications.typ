@@ -1,220 +1,178 @@
+//
+// Copyright 2025 Brad Garn
+//
 
-\documentclass[GR.tex]{subfiles}
+#import "utils.typ" : *
 
-\begin{document}
+#pagebreak()
+== The Schwarzschild Metric Applications
 
-    \newpage
-    \section{The Schwarzschild Metric Applications}
+=== Time Dilation
 
+Consider two stationary clocks in the Schwarzschild geometry, located at fixed radii $r_1$ and $r_2$:
 
+$
+& x_1^𝜇 (𝜏_1) &&= ( c t_1(𝜏_1), r_1, 𝜃_0, 𝜑_0 ) \
+& x_2^𝜇 (𝜏_2) &&= ( c t_2(𝜏_2), r_2, 𝜃_0, 𝜑_0 )
+$
 
-    \subsection{Time Dilation}
+Using previously computed $B(r)$ gives the rate of change of coordinate time $(c t)$ with respect to proper time:
 
-    \begin{align}
-        \shortintertext{Consider two stationary clocks in the Schwarzschild geometry, located at fixed radii $r_1$ and $r_2$}
-        x_1^𝜇(𝜏1) &= ( c\,t_1(𝜏_1),r_1,𝜃_0,𝜑_0 )  \\
-        x_2^𝜇(𝜏2) &= ( c\,t_2(𝜏_2),r_2,𝜃_0,𝜑_0)  \\
-        \shortintertext{using previously computed $B(r)$ gives}
-        \dv{(ct)}{𝜏} &= c\,\sqrt{\recip{1 - \frac{2\,G\,M}{c^2\,r}} }  \\
-        \shortintertext{ the rate of change of coordinate time with respect to proper time }
-        \dv{t}{𝜏} &= \recip{\sqrt{1 - \frac{2\,G\,M}{c^2\,r}} }    \\
-        \shortintertext{or the rate of change of proper time with respect to coordinate time  }
-        \dot{𝜏} = \dv{𝜏}{t} =  \sqrt{1 - \frac{2\,G\,M}{c^2\,r}}
-        \shortintertext{give a coordinate time interval $𝛥t$ we can compute the proper time interval $𝛥𝜏$}
-        𝛥𝜏 &= \int_{t = t_0}^{t_0 + 𝛥t} \dot{𝜏} \dd{t}
-        \shortintertext{because in this case $\dot{𝜏}$ is constant with respect to t}
-        &= \dot{𝜏}\,\int_{t = t_0}^{t_0 + 𝛥t}  \dd{t} \\
-        &= \dot{𝜏}\,\Big|_{t_0}^{t_0 + 𝛥t} \\
-        &= \dot{𝜏}\,𝛥t
-        \shortintertext{Compute the difference in elapsed proper times between two radii}
-        𝛥𝜏_{21} &\equiv 𝛥𝜏_2 - 𝛥𝜏_1                \\
-        &= \dot{𝜏}_2\,𝛥t - \dot{𝜏}_1\,𝛥t   \\
-        &= (\dot{𝜏}_2 - \dot{𝜏}_1)\,𝛥t     \\
-        &= (\dot{𝜏}_2 - \dot{𝜏}_1)\,\frac{𝛥𝜏_1}{\dot{𝜏}_1}    \\
-        &= \qty(\frac{\dot{𝜏}_2}{\dot{𝜏}_1} - 1)\,𝛥𝜏_1 \\
-        &= \qty(\frac{ \sqrt{1 - \frac{2\,G\,M}{c^2\,r_2}} }{ \sqrt{1 - \frac{2\,G\,M}{c^2\,r_1}}} - 1  )\,𝛥𝜏_1 \\
-        &= \qty(\sqrt{ \frac{1 - \frac{2\,G\,M}{c^2\,r_2}} { 1 - \frac{2\,G\,M}{c^2\,r_1}} } - 1)\,𝛥𝜏_1 \\
-    \end{align}
+$ dv((c t), 𝜏) = c sqrt( 1 / (1 - (2 G M) / (c^2 r)) ) $
 
-    \begin{luacode*}
-        G = 6.67430e-11  -- m^3/(kg s^2)
-        c = 299792458    -- m/s
+The rate of change of coordinate time $t$ with respect to proper time:
 
-        function schwarzschildRadius(aMass)
-            return 2*G*aMass/c^2   -- m
-        end
+$ dv(t, 𝜏) = 1 / sqrt(1 - (2 G M) / (c^2 r)) $
 
-        function schwarzschildFactor(aMass, aRadius)
-            return 1 - schwarzschildRadius(aMass)/aRadius  -- dimensionless
-        end
+Or the rate of change of proper time with respect to coordinate time:
 
-        function print_mm(aLengthMeters)
-            printf("\\SI{%.2f}{\\milli\\meter}",aLengthMeters * 1000)
-        end
+$ dot(𝜏) = dv(𝜏, t) = sqrt(1 - (2 G M) / (c^2 r)) $
 
-        function print_km(aLengthMeters)
-            printf("\\SI{%.2f}{\\kilo\\meter}",aLengthMeters / 1000 )
-        end
+Given a coordinate time interval $𝛥 t$, we can compute the proper time interval $𝛥 𝜏$:
 
+$ 𝛥 𝜏 = integral_(t = t_0)^(t_0 + 𝛥 t) dot(𝜏) dd(t) $
 
-        function tauDotStationary(aMass, aRadius)
-            return math.sqrt( schwarzschildFactor(aMass,aRadius ) )
-        end
+Because in this case $dot(𝜏)$ is constant with respect to $t$:
 
+$
+& &&= dot(𝜏) integral_(t = t_0)^(t_0 + 𝛥 t) dd(t) \
+& &&= dot(𝜏) bar_(t_0)^(t_0 + 𝛥 t) \
+& &&= dot(𝜏) 𝛥 t
+$
 
-        mSun = 1.989e30  -- kg
+Compute the difference in elapsed proper times between two radii:
 
-        mEarth = 5.97219e24   -- kg
-        rEarth = 6.371e6      -- mean radius, m
+$
+& 𝛥 𝜏_(21) &&:= 𝛥 𝜏_2 - 𝛥 𝜏_1 \
+& &&= dot(𝜏)_2 𝛥 t - dot(𝜏)_1 𝛥 t \
+& &&= (dot(𝜏)_2 - dot(𝜏)_1) 𝛥 t \
+& &&= (dot(𝜏)_2 - dot(𝜏)_1) (𝛥 𝜏_1 / dot(𝜏)_1) \
+& &&= (dot(𝜏)_2 / dot(𝜏)_1 - 1) 𝛥 𝜏_1 \
+& &&= ( sqrt(1 - (2 G M) / (c^2 r_2)) / sqrt(1 - (2 G M) / (c^2 r_1)) - 1 ) 𝛥 𝜏_1 \
+& &&= ( sqrt( (1 - (2 G M) / (c^2 r_2)) / (1 - (2 G M) / (c^2 r_1)) ) - 1 ) 𝛥 𝜏_1
+$
 
-        r_s_earth =  schwarzschildRadius(mEarth)
-        r_s_sun =  schwarzschildRadius(mSun)
+#let G = 6.67430e-11 // m^3 kg^-1 s-2
+#let c = 299792458 // m/s
+#let sunMass = 1.989e30 // kg
+#let sunRadius = 695700000 // m
+#let earthMass = 5.97219e24 // kg
+#let earthRadius = 6.371e6 // m
+#let earthOrbitRadius = 149597870700 //m
 
+#let schwarzschildRadius(m) = (2 * G * m) / calc.pow(c, 2)
+#let schwarzschildFactor(m, r) = 1 - (schwarzschildRadius(m) / r)
+#let tauDotStationary(m, r) = calc.sqrt(schwarzschildFactor(m, r))
+#let deltaTau21(tauDot2, tauDot1, deltaTau1) = (tauDot2 / tauDot1 - 1) * deltaTau1
 
-        -- Compute Δτ_{21} = ( τdot2 / τdot1 - 1) * Δτ1
-        function deltaTau21(tauDot2, tauDot1, deltaTau1)
-            return (tauDot2 / tauDot1 - 1) * deltaTau1
-        end
+//--------------------------------------------------------------------------------------------------
+// Display table of time dilation
+#let dilationTable(
+    caption: none,              // caption for the table
+    mass: none,                 // The mass of the central gravitational body (in kg)
+    r1: none,                   // Time dilations computed compared to a clock at this radius (in meters)
+    locations: (),              // Array of dictionaries, each with a .name and .radius (in meters)
+    radius_header: [Radius],    // The header for the "radius" column
+    radius_transform: r => r    // A transform for the "radius" column data
+) = {
+  let td1 = tauDotStationary(mass, r1)
+  let day = 86400.0
+  let year = 365.25 * day
+  figure(
+    caption: caption,
+    table(
+      columns: (1.5fr, 1.2fr, 1.8fr, 1.2fr, 1.2fr),
+      inset: 7pt,
+      align: (left, right, right, right, right),
+      stroke: none,
+      table.hline(),
+      table.header(
+        [Name], radius_header, [$dot(𝜏)_2$], [$𝛥 𝜏_(21)$ (1d)], [$𝛥 𝜏_(21)$ (1y)]
+      ),
+      table.hline(stroke: 0.5pt),
+      ..locations.map(loc => {
+        let r2 = loc.radius
+        let td2 = tauDotStationary(mass, r2)
+        (
+          loc.name,
+          fmt(radius_transform(r2), digits: 0, commas: true),
+          fmt(td2, digits: 14),
+          if r2 == r1 [] else { formatSecondsAuto(deltaTau21(td2, td1, day)) },
+          if r2 == r1 [] else { formatSecondsAuto(deltaTau21(td2, td1, year)) },
+        )
+      }).flatten(),
+      [Infinity],
+      [$∞$],
+      fmt(1, digits: 14),
+      formatSecondsAuto(deltaTau21(1.0, td1, day)),
+      formatSecondsAuto(deltaTau21(1.0, td1, year)),
+      table.hline(),
+    )
+  )
+}
 
+$ R_s = (2 G M) / c^2 $
+is called the Schwarzschild radius.
+It's the key scaling parameter in Schwarzschild geometry.
+For Earth, its value is:
+$ R_earth = (2 G M_earth) / c^2 = #fmt(schwarzschildRadius(earthMass) * 1000) "mm" $
 
-    function printAltitudeTableRows(mass, r1, radii, offset, scale)
+This would be the radius of the event horizon of a black hole with the mass of earth.
 
-        local tauDot1      = tauDotStationary(mass, r1)
-        local deltaTau1Day  = 86400
-        local deltaTau1Year = 365.25 * deltaTau1Day
+The following table shows the gravitational time dilation caused by the earth relative to a clock at sea level ($r_1$)
+These do not take into account the time dilation caused by the velocity of the clocks.
+It's as if the clocks are "hovering" at the given altitude.
+The next section will account for the velocity of the clocks.
 
+#let earth_locations = (
+  // all in meters
+  (name: "Dead Sea", radius: earthRadius - 430),
+  (name: "Death Valley", radius: earthRadius - 86),
+  (name: "Sea Level", radius: earthRadius),
+  (name: "1 meter", radius: earthRadius + 1),
+  (name: "Chandler, AZ", radius: earthRadius + 370),
+  (name: "Mount Everest", radius: earthRadius + 8848),
+  (name: "Passenger Jet", radius: earthRadius + 10000),
+  (name: "ISS Orbit", radius: 6.78e6),
+  (name: "GPS Orbit", radius: 2.656e7),
+  (name: "Geosynchronous", radius: 4.2164e7),
+  (name: "Moon Orbit", radius: 3.844e8),
+)
 
-        for _, loc in ipairs(radii) do
-            local name, r2 = loc.name, loc.radius
-
-            local elev = (r2 - offset) / scale
-            --local r2         = r1 + elev
-            local tauDot2    = tauDotStationary(mass, r2)
-
-            tex.print(string.format(
-                "%s & %s & %.16f & ",
-                name,
-                commas(elev),
-                tauDot2
-            ))
-
-            if r1 == r2 then
-                -- Print blank cells for Δτ columns
-                tex.print(" &   \\\\")
-            else
-
-                local dTau21_day  = deltaTau21(tauDot2, tauDot1, deltaTau1Day)
-                local dTau21_year = deltaTau21(tauDot2, tauDot1, deltaTau1Year)
-
-                tex.print(string.format(
-                    "%s & %s \\\\",
-                    formatSecondsAuto(dTau21_day),
-                    formatSecondsAuto(dTau21_year)
-                ))
-            end
-        end
-
-        -- Infinity row
-        local tauDot2    = 1.0
-        local dTau21_day_inf  = deltaTau21(tauDot2, tauDot1, deltaTau1Day)
-        local dTau21_year_inf = deltaTau21(tauDot2, tauDot1, deltaTau1Year)
-
-        tex.print(string.format(
-            "Infinity & $\\infty$ & %.16f & %s & %s \\\\",
-            tauDot1,
-            formatSecondsAuto(dTau21_day_inf),
-            formatSecondsAuto(dTau21_year_inf)
-        ))
-    end
-
-    local R = function(n, radius_m) return {name=n, radius=radius_m} end
-
-    function earthTimeDilationRows()
-        locations = {
-           R("Dead Sea", rEarth - 430),
-           R("Death Valley", rEarth - 86),
-           R("Sea Level", rEarth),
-           R("1 meter", rEarth + 1),
-           R("Chandler, AZ", rEarth + 370),
-           R("Mount Everest", rEarth + 8848),
-           R("Passenger Jet", rEarth + 10000),
-           R("ISS Orbit", 6.78e6),
-           R("GPS Orbit", 2.656e7),
-           R("Geosynchronous Orbit", 4.2164e7),
-           R("Moon Orbit", 3.844e8),
-        }
-
-        printAltitudeTableRows(mEarth, rEarth, locations, rEarth, 1)
-    end
-
-    function sunTimeDilationRows()
-        rOrbitEarth = 1.49598e11
-
-        orbits = {
-            R("Sun Surface", 6.9634e8),
-            R("Mercury", 5.7909e10),
-            R("Venus", 1.0821e11),
-            R("Earth", rOrbitEarth),
-            R("Mars", 2.27939e11),
-            R("Jupiter", 7.78412e11),
-            R("Saturn", 1.42666e12),
-            R("Uranus", 2.87099e12),
-            R("Neptune", 4.49825e12),
-        }
-
-        printAltitudeTableRows(mSun,rOrbitEarth, orbits, 0, 1000)
-    end
-    \end{luacode*}
-
-    \[
-        R_s = \frac{2\,G\,M}{c^2},
-    \]
-    is called the Schwarzschild radius.
-    It's the key scaling parameter in Schwarzschild geometry.
-    For earth its value is,
-    \[
-        R_⊕ = \frac{2\,G\,M_⊕}{c^2} = \directlua{print_mm(r_s_earth)}.
-    \]
-    This would be the radius of the event horizon of a black hole with the mass of earth.
+#dilationTable(
+  caption: [Earth Gravitational time dilation relative to Sea Level $(r_1)$.],
+  mass: earthMass,
+  r1: earthRadius,
+  locations: earth_locations,
+  radius_header: [Alt (m)],
+  radius_transform: r => r - earthRadius // display altitude relative to earth surface
+)
 
 
-    The following table shows the gravitational time dilation caused by the earth relative to a clock at sea level ($r_1$)
-    These do not take into account the time dilation caused by the velocity of the clocks.
-    It's as if the clocks are "hovering" at the given altitude.
-    The next section will account for the velocity of the clocks.
 
-    \begin{table}[h!]
-        \centering
-        \caption{Earth Gravitational time dilation relative to Sea Level $(r_1$.}
-        \begin{tabular}{l r r r r }
-            \toprule
-            &                             &                       & \bold{$𝛥𝜏_1$ (1 day)} &  \bold{$𝛥𝜏_1$ (1 year)} \\
-            \bold{Name} & \bold{$r_2$ = Altitude (m)} & \bold{$\dot{\tau}_2$} &      \bold{$𝛥𝜏_{21}$} &        \bold{$𝛥𝜏_{21}$} \\
-            \midrule
-            \directlua{earthTimeDilationRows()}
-            \bottomrule
-        \end{tabular}
-    \end{table}
+For the sun, the Schwarzschild radius is:
+$ R_sun = (2 G M_sun) / c^2 = #fmt(schwarzschildRadius(sunMass) / 1000) "km" $
 
-    For the sun the Schwarzschild radius is,
-    \[
-        R_☉ = \frac{2\,G\,M_☉}{c^2} = \directlua{print_km(r_s_sun)}.
-    \]
+This table show the time dilation caused by the sun relative to a clock "hovering" at the radius of the earth's orbit $(r_1)$.
 
-    This table show the time dilation caused by the sun relative to a clock "hovering" at the radius of the earth's orbit $(r_1)$.
+#let sunOrbits = (
+  // all in meters
+  (name: "Sun Surface", radius: 695700000),
+  (name: "Mercury",     radius: 57909050000),
+  (name: "Venus",       radius: 108208000000),
+  (name: "Earth",       radius: earthOrbitRadius), // Exactly 1 AU
+  (name: "Mars",        radius: 227939200000),
+  (name: "Jupiter",     radius: 778570000000),
+  (name: "Saturn",      radius: 1433530000000),
+  (name: "Uranus",      radius: 2872460000000),
+  (name: "Neptune",     radius: 4495060000000),
+)
 
-    \begin{table}[h!]
-        \centering
-        \caption{Sun Gravitational time dilation relative to Earth  Orbit $(r_1)$.}
-        \begin{tabular}{l r r r r }
-            \toprule
-            &                            &                       & \bold{$𝛥𝜏_1$ (1 day)} &  \bold{$𝛥𝜏_1$ (1 year)} \\
-            \bold{Name} & \bold{$r_2$ = Radius (km)} & \bold{$\dot{\tau}_2$} &      \bold{$𝛥𝜏_{21}$} &        \bold{$𝛥𝜏_{21}$} \\
-            \midrule
-            \directlua{sunTimeDilationRows()}
-            \bottomrule
-        \end{tabular}
-    \end{table}
-
-
-\end{document}
+#dilationTable(
+  caption: [Sun Gravitational time dilation relative to Earth Orbit $(r_1)$],
+  mass: sunMass,
+  r1: earthOrbitRadius,
+  locations: sunOrbits,
+  radius_header: [Radius (km)],
+  radius_transform: r => r / 1000 // convert to km for display
+)

@@ -16,7 +16,7 @@
           stroke: none,
           table.header(
           table.hline(stroke: 0.8pt),
-          [*Sybmbol*], [*Name*],                   [*Quantity*],            [*Dimensions*],
+          [Sybmbol], [Name],                   [Quantity],            [Dimensions],
           table.hline(stroke: 0.5pt),
           ),
 

@@ -75,11 +75,11 @@
 
 //--------------------------------------------------------------------------------------------------
 // An equation with a right justified note
-#let eqNote(equation, note) = table(
+#let eqNote(equation, note) = grid(
   columns: (1fr, auto, 1fr),
-  align: vHorizon((center, center, right)),
-  stroke: none,
-  [],  // left column empty
+  align: vHorizon((center, center, right )),
+  rows: 1,
+  [], // left column empty
   equation,
   text(note, size: 0.9em, fill: gray),
 )
@@ -173,3 +173,61 @@
     radius:4pt,
     outset:0.5em
 )
+
+//--------------------------------------------------------------------------------------------------
+// format a number
+#let fmt(
+    val,            // the number to format
+    digits: 2,      // the number of digits after the decimal point
+    commas: false   // commas as thousand separator
+) = {
+  let rounded = calc.round(val, digits: digits)
+  let s = str(calc.abs(rounded))
+
+  // Split integer and decimal
+  let parts = s.split(".")
+  let int-part = parts.at(0)
+  let actual-dec = if parts.len() > 1 { parts.at(1) } else { "" }
+
+  // 1. Padding Logic: Ensure we have exactly 'digits' characters
+  let dec-part = if digits > 0 {
+    "." + actual-dec + ("0" * (digits - actual-dec.len()))
+  } else {
+    ""
+  }
+
+  // 2. Comma logic
+  let formatted-int = if commas {
+    int-part.clusters()
+      .rev()
+      .enumerate()
+      .map(((i, d)) => if i != 0 and calc.rem(i, 3) == 0 { d + "," } else { d })
+      .rev()
+      .join()
+  } else {
+    int-part
+  }
+
+  [#if rounded < 0 { $minus$ }#formatted-int#dec-part]
+}
+
+//--------------------------------------------------------------------------------------------------
+// Format seconds with units add
+#let formatSecondsAuto(
+  seconds,
+  digits: 1
+  // TODO: add option to not align units to widest
+) = context {
+  let s = calc.abs(seconds)
+
+  let units = ([s], [ms], [μs], [ns], [ps])
+  let widest = calc.max(..units.map(u => measure(u).width))
+
+  let (val, units) = if s >= 1 or s == 0 { (seconds, [s]) }
+    else if s >= 1e-3 { (seconds * 1e3, [ms]) }
+    else if s >= 1e-6 { (seconds * 1e6, [μs]) }
+    else if s >= 1e-9 { (seconds * 1e9, [ns]) }
+    else              { (seconds * 1e12, [ps]) }
+
+  [#fmt(val, digits: digits) #box(width: widest, align(left)[#units])]
+}
