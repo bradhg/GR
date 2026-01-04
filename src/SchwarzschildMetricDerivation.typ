@@ -413,7 +413,7 @@ recall $V = -1/B$ so $B = -1/V$
 
 $
 B = -1/(-1 + C_1/r) \
-boxed(  B = 1/(1 - C_1/r)  ) \
+#boxed( $ B = 1/(1 - C_1/r) $ ) \
 $
 
 notice that this correctly matches the boundary condition $B(∞) = η_(r r) = 1$
@@ -465,7 +465,7 @@ $ A = K(1 - C_1 / r) $
 
 apply boundary condition $A(infinity) = eta_(t t) = -1$ to determine $K = -1$
 
-$ boxed(A = -(1 - C_1 / r)) $
+$ #boxed( $ A = -(1 - C_1 / r) $ ) $
 
 
 === Solve for $C_1$
@@ -486,7 +486,7 @@ $ x^𝜇 = (c t(𝜏), r(𝜏), 𝜃(𝜏), 𝜑(𝜏)) $
 
 where $𝜏$ is defined by the following relation
 
-$ -c^2 dd(𝜏)^2 = dd(s)^2 = g_(O𝜇 G𝜈) dd(x)^O𝜇 dd(x)^G𝜈 $
+$ -c^2 dd(𝜏)^2 := dd(s)^2 = g_(O𝜇 G𝜈) dd(x)^O𝜇 dd(x)^G𝜈 $
 
 For a non moving obj at some distance $r$ from the center of a sphere the coordinates are
 
@@ -612,7 +612,8 @@ $ a approx (G M) / r^2 $
 
 substitute $C_1$ into $A$ and $B$
 
-$ boxed(A = -(1 - (2 G M) / (c^2 r)) quad B = 1 / (1 - (2 G M) / (c^2 r))) $
+$ #boxed( $  A = -(1 - (2 G M) / (c^2 r)) $ ) $     <eq:ASchwar>
+$ #boxed( $  B = 1 / (1 - (2 G M) / (c^2 r)) $ ) $  <eq:BSchwar>
 
 === The Schwarzschild Metric
 

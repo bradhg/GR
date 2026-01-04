@@ -5,9 +5,9 @@
 #import "utils.typ" : *
 
 #pagebreak()
-== The Schwarzschild Metric Applications
+= The Schwarzschild Metric Applications
 
-=== Time Dilation
+== Time Dilation (Stationary)
 
 Consider two stationary clocks in the Schwarzschild geometry, located at fixed radii $r_1$ and $r_2$:
 
@@ -16,15 +16,22 @@ $
 & x_2^𝜇 (𝜏_2) &&= ( c t_2(𝜏_2), r_2, 𝜃_0, 𝜑_0 )
 $
 
-Using previously computed $B(r)$ gives the rate of change of coordinate time $(c t)$ with respect to proper time:
+As was shown previously, applying the geodesic equation to the static metric leads to this expression for the time-like coordinate rate of change:
+#reShow(<eq:dt_dtau_B>)
+
+Now substitute in $B(r)$
+
+#reShow(<eq:BSchwar>)
+
+to get:
 
 $ dv((c t), 𝜏) = c sqrt( 1 / (1 - (2 G M) / (c^2 r)) ) $
 
-The rate of change of coordinate time $t$ with respect to proper time:
+Divide both sides by the speed of light $c$ to get the rate of change of coordinate time $t$ with respect to proper time $𝜏$:
 
 $ dv(t, 𝜏) = 1 / sqrt(1 - (2 G M) / (c^2 r)) $
 
-Or the rate of change of proper time with respect to coordinate time:
+Inverting provides the rate of change of proper time with respect to coordinate time:
 
 $ dot(𝜏) = dv(𝜏, t) = sqrt(1 - (2 G M) / (c^2 r)) $
 
@@ -52,9 +59,15 @@ $
 & &&= ( sqrt( (1 - (2 G M) / (c^2 r_2)) / (1 - (2 G M) / (c^2 r_1)) ) - 1 ) 𝛥 𝜏_1
 $
 
+The Schwarzschild radius is defined as:
+$ R_s := (2 G M) / c^2 $
+It's the key scaling parameter in Schwarzschild geometry. We can use it to simplify the $𝛥 𝜏_(21)$ equation to the following:
+
+$ 𝛥 𝜏_(21) = ( sqrt( (1 - R_s/r_2) / (1 - R_s/r_1) ) - 1 ) 𝛥 𝜏_1 $
+
 #let G = 6.67430e-11 // m^3 kg^-1 s-2
 #let c = 299792458 // m/s
-#let sunMass = 1.989e30 // kg
+#let sunMass = 1.98847e30 // kg
 #let sunRadius = 695700000 // m
 #let earthMass = 5.97219e24 // kg
 #let earthRadius = 6.371e6 // m
@@ -81,7 +94,7 @@ $
   figure(
     caption: caption,
     table(
-      columns: (1.5fr, 1.2fr, 1.8fr, 1.2fr, 1.2fr),
+      columns: (1.6fr, 1.2fr, 1.4fr, 1.1fr, 1.1fr),
       inset: 7pt,
       align: (left, right, right, right, right),
       stroke: none,
@@ -95,7 +108,7 @@ $
         let td2 = tauDotStationary(mass, r2)
         (
           loc.name,
-          fmt(radius_transform(r2), digits: 0, commas: true),
+          radius_transform(loc),
           fmt(td2, digits: 14),
           if r2 == r1 [] else { formatSecondsAuto(deltaTau21(td2, td1, day)) },
           if r2 == r1 [] else { formatSecondsAuto(deltaTau21(td2, td1, year)) },
@@ -111,11 +124,11 @@ $
   )
 }
 
-$ R_s = (2 G M) / c^2 $
-is called the Schwarzschild radius.
-It's the key scaling parameter in Schwarzschild geometry.
-For Earth, its value is:
-$ R_earth = (2 G M_earth) / c^2 = #fmt(schwarzschildRadius(earthMass) * 1000) "mm" $
+=== Earth
+
+For Earth, the Schwarzschild radius is:
+
+$ R_(s,plus.o) = (2 G M_plus.o) / c^2 = #fmt(schwarzschildRadius(earthMass) * 1000, sigFigs:4) "mm" $
 
 This would be the radius of the event horizon of a black hole with the mass of earth.
 
@@ -145,13 +158,13 @@ The next section will account for the velocity of the clocks.
   r1: earthRadius,
   locations: earth_locations,
   radius_header: [Alt (m)],
-  radius_transform: r => r - earthRadius // display altitude relative to earth surface
+  radius_transform: loc => fmt(loc.radius - earthRadius, digits: 0, commas: true) // display altitude relative to earth surface
 )
 
-
+=== Sun
 
 For the sun, the Schwarzschild radius is:
-$ R_sun = (2 G M_sun) / c^2 = #fmt(schwarzschildRadius(sunMass) / 1000) "km" $
+$ R_(s,dot.o) = (2 G M_dot.o) / c^2 = #fmt(schwarzschildRadius(sunMass) / 1000, sigFigs:2) "km" $
 
 This table show the time dilation caused by the sun relative to a clock "hovering" at the radius of the earth's orbit $(r_1)$.
 
@@ -168,11 +181,69 @@ This table show the time dilation caused by the sun relative to a clock "hoverin
   (name: "Neptune",     radius: 4495060000000),
 )
 
+#let AUtoMeters = 149597870700 //International Astronomical Union (IAU) has defined the astronomical unit (au) as an exact fixed value.
+
 #dilationTable(
   caption: [Sun Gravitational time dilation relative to Earth Orbit $(r_1)$],
   mass: sunMass,
   r1: earthOrbitRadius,
   locations: sunOrbits,
-  radius_header: [Radius (km)],
-  radius_transform: r => r / 1000 // convert to km for display
+  radius_header: [Radius (au)],
+  radius_transform: loc => fmt( loc.radius / AUtoMeters , sigFigs:2)// convert to km for display
+)
+
+#let aStar = [A#h(-0.15em)#text(baseline: -0.1em)[$*$]] // A* using the math mode * moved up and closer
+=== Sagittarius #aStar
+
+#let sgrA = [Sgr#aStar]
+
+#let sgrAMass = 4.297e6 * sunMass
+#let RsSgrA = schwarzschildRadius(sgrAMass)
+
+the Schwarzschild radius of Sagittarius #aStar#footnote[#aStar is pronounced "A Star"], the Black hole at the center of the Milky is:
+$ R_sgrA = (2 G M_sgrA) / c^2 = #fmt(RsSgrA / 1000, sigFigs:4, commas: true) "km" $
+
+#let lightYear = 365.25*86400*c
+#let earthToSgrADistance = 26000 * lightYear
+
+
+#let s2 = text(features: ("case",))[S2]  // make 2 the same height S
+
+#let footnotePhotonSphere = footnote[The Radius that light orbits]
+#let footnoteISCO = footnote[Innermost Stable Circular Orbit]
+#let footnoteS2 = footnote[#s2 is a star with a highly eccentric orbit around #sgrA. Bothron from the Ancient Greek βόθρος (bóthros), "pit."]
+
+#let sgrAPois = (
+    (name: [Event Horizon $R_s$],                         radius: RsSgrA ),
+    (name: [$R_s+1$ m],                                   radius: RsSgrA+1 ),
+    (name: [Photon Sphere#footnotePhotonSphere $1.5R_s$], radius: 1.5 * RsSgrA ),
+    (name: [ISCO#footnoteISCO $3R_s$],                    radius: 3 * RsSgrA ),
+    (name: [#s2 Peribothron#footnoteS2],                  radius: 120 * AUtoMeters ),
+    (name: [#s2 Apobothron],                              radius: 1838 * AUtoMeters ),
+    (name: [Earth],                                       radius: earthToSgrADistance ),
+    (name: [Andromeda Galaxy],                            radius: 2.5e6 * lightYear )
+)
+
+#dilationTable(
+  caption: [Sagittarius #aStar Gravitational time dilation relative to Infinity $(r_1)$],
+  mass: sgrAMass,
+  r1: float.inf,
+  locations: sgrAPois,
+  radius_header: [Radius],
+  radius_transform: loc => context{
+
+    // Setup unit list for the alignment box
+    let units_list = ([au], [ly])
+    let widest = calc.max(..units_list.map(u => measure(u).width))
+
+    if loc.radius < lightYear{
+        fmt(loc.radius/AUtoMeters, sigFigs: 2, commas: true)
+        sym.space.nobreak.narrow
+        box(width: widest, align(left)[au])
+    }else{
+        fmt(loc.radius/lightYear, commas: true)
+        sym.space.nobreak.narrow
+        box(width: widest, align(left)[ly])
+    }
+  }
 )

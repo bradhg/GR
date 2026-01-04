@@ -4,6 +4,7 @@
 
 #import "@preview/physica:0.9.7": dd, dv
 #import "@preview/mannot:0.3.1": mark, markhl, markrect
+#import "@preview/zero:0.5.0" : num, set-round as setRound, set-group as setGroup
 
 //--------------------------------------------------------------------------------------------------
 // util to make all rows in a table have have horizon veritical allignment
@@ -167,48 +168,45 @@
 
 //--------------------------------------------------------------------------------------------------
 // Draw a box around an equation
-#let boxed(body) = markrect(
-    body,
+// Has to be used like #boxed( $ a + b $ )
+#let boxed(
+  body
+) = block(
     stroke: 1pt,
-    radius:4pt,
-    outset:0.5em
-)
+    radius: 4pt,
+    inset: 0.5em,  // 'inset' moves the border away from the math
+    width: auto,   // Only as wide as the equation
+    body           // The math content
+  )
+
 
 //--------------------------------------------------------------------------------------------------
 // format a number
 #let fmt(
-    val,            // the number to format
-    digits: 2,      // the number of digits after the decimal point
-    commas: false   // commas as thousand separator
+  val,            // the number to format
+  digits: auto,   // the number of digits after the decimal point
+  sigFigs: none,  // Significant figures
+  commas: false   // commas as thousand separator
 ) = {
-  let rounded = calc.round(val, digits: digits)
-  let s = str(calc.abs(rounded))
 
-  // Split integer and decimal
-  let parts = s.split(".")
-  let int-part = parts.at(0)
-  let actual-dec = if parts.len() > 1 { parts.at(1) } else { "" }
-
-  // 1. Padding Logic: Ensure we have exactly 'digits' characters
-  let dec-part = if digits > 0 {
-    "." + actual-dec + ("0" * (digits - actual-dec.len()))
-  } else {
-    ""
+  let grouping = if(commas){
+    (size: 3, separator:[,], threshold:3)
+  }else{
+    (threshold: calc.inf)
   }
 
-  // 2. Comma logic
-  let formatted-int = if commas {
-    int-part.clusters()
-      .rev()
-      .enumerate()
-      .map(((i, d)) => if i != 0 and calc.rem(i, 3) == 0 { d + "," } else { d })
-      .rev()
-      .join()
-  } else {
-    int-part
+  let rounding = if(sigFigs!=none){
+    (mode: "figures", precision: sigFigs)
+  }else{
+    (mode: none)
   }
 
-  [#if rounded < 0 { $minus$ }#formatted-int#dec-part]
+  num(
+    val,
+    digits: digits,
+    round: rounding,
+    group: grouping
+  )
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -216,18 +214,62 @@
 #let formatSecondsAuto(
   seconds,
   digits: 1
-  // TODO: add option to not align units to widest
 ) = context {
   let s = calc.abs(seconds)
 
-  let units = ([s], [ms], [μs], [ns], [ps])
-  let widest = calc.max(..units.map(u => measure(u).width))
+  // Define time constants
+  let minute = 60.0
+  let hour = 3600.0
+  let day = 86400.0
+  let year = 365.25 * day
 
-  let (val, units) = if s >= 1 or s == 0 { (seconds, [s]) }
-    else if s >= 1e-3 { (seconds * 1e3, [ms]) }
-    else if s >= 1e-6 { (seconds * 1e6, [μs]) }
-    else if s >= 1e-9 { (seconds * 1e9, [ns]) }
-    else              { (seconds * 1e12, [ps]) }
+  // Setup unit list for the alignment box
+  let units_list = ([yr], [d], [hr], [min], [s], [ms], [μs], [ns], [ps])
+  let widest = calc.max(..units_list.map(u => measure(u).width))
 
-  [#fmt(val, digits: digits) #box(width: widest, align(left)[#units])]
+  // Determine value and unit
+  let (val, unit) = if s == 0 { (0.0, [s]) }
+    else if s >= year   { (seconds / year, [yr]) }
+    else if s >= day    { (seconds / day, [d]) }
+    else if s >= hour   { (seconds / hour, [hr]) }
+    else if s >= minute { (seconds / minute, [min]) }
+    else if s >= 1.0    { (seconds, [s]) }
+    else if s >= 1e-3   { (seconds * 1e3, [ms]) }
+    else if s >= 1e-6   { (seconds * 1e6, [μs]) }
+    else if s >= 1e-9   { (seconds * 1e9, [ns]) }
+    else                { (seconds * 1e12, [ps]) }
+
+  // Render
+  fmt(val, digits: digits)
+  sym.space.nobreak.narrow
+  box(width: widest, align(left)[#unit])
+}
+
+//--------------------------------------------------------------------------------------------------
+// reShow a labeld eqution with a reference to the original
+#let reShow(
+  label
+) = context {
+  let elements = query(label)
+  if elements.len() == 1 {
+    let labeled = elements.first()
+    let theBody = labeled.body
+
+    if theBody.func() == block {
+      // The 'body' is a block
+      let innerBody = theBody.body
+
+      // If that inner content is an equation, grab its math body
+      if innerBody.func() == math.equation {
+        theBody = innerBody.body
+      } else {
+        theBody = innerBody
+      }
+    }
+
+    eqNote(
+      math.equation(theBody, block: true, numbering: none),
+      ref(label, supplement: [see Equation])
+    )
+  }
 }
