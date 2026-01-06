@@ -6,7 +6,7 @@
 // Document setup
 #let documentSetup(
   title: none,
-  body
+  docBody
 ) = {
   set document(
     title: title,
@@ -61,7 +61,27 @@
     }
   }
 
-  body
+  // make level 4 headings run-in headings where the heading and the run in are separated by an em-dash (---)
+  show heading.where(level: 4): it => {
+    let body = it.body
+
+    if body.has("children") {
+      let elements = body.children
+      let emDashIndex = elements.position(el => el == [#sym.dash.em])
+  
+      if emDashIndex != none {
+        let title = elements.slice(0, emDashIndex).join()
+        let leadIn = text(weight: "regular", elements.slice(emDashIndex + 1).join() )
+
+        body = title + sym.space.quarter + sym.dash.em + sym.space.quarter + leadIn
+      }
+    }
+  
+    block(sticky: true, below: 0.6em, body)
+  }
+
+
+  docBody
 }
 
 //--------------------------------------------------------------------------------------------------

@@ -470,14 +470,14 @@ $ #boxed( $ A = -(1 - C_1 / r) $ ) $
 
 === Solve for $C_1$
 
-*A and B* along with the relationship between them and a derivative.
+==== A and B---and the relationship between them and a derivative.
 
 $ A = -(1 - C_1/r) $
 $ B = 1 / (1 - C_1/r) $
 $ B = -1/A $
 $ A' = -C_1 / r^2 $
 
-*Spacetime Coordinates and Proper Time*
+==== Spacetime Coordinates and Proper Time
 
 These are the spherical spacetime coordinates as functions of proper time $𝜏$.
 The $t$ coordinate is multiplied by $c$ so that all four coordinates will be in length units.
@@ -492,7 +492,7 @@ For a non moving obj at some distance $r$ from the center of a sphere the coordi
 
 $ x^𝜇 = (c t(𝜏), r, 𝜃, 𝜑) $
 
-*The Four-Velocity*
+==== The Four-Velocity
 
 The four-velocity is the ordinary derivative of the spacetime coordinates with respect to proper time.
 
@@ -535,7 +535,7 @@ again recalling $B = -1/A$
 
 $ -c^2 equiv -c^2 quad checkmark $
 
-*The Four-Acceleration*
+==== The Four-Acceleration
 
 #let O𝜈 = Orange[𝜈]
 #let G𝜌 = Green[𝜌]
@@ -676,9 +676,8 @@ $ A = -(1 - C_1/r) $
 $ A' = -C_1 / r^2 $
 $ A'' = (2 C_1) / r^3 $
 
-==== Ricci Tensor $R_(t t)$
+==== Ricci Tensor $R_(t t)$---Start with the equation we derived previously:
 
-Start with the equation we derived previously:
 $ R_(t t) = - (A'') / (2B) + (A' B') / (4B^2) + (A'^2) / (4A B) - (A') / (r B) $
 
 Substitute in $B$ and $B'$ to get everything in terms of $A$ and its derivatives:
@@ -697,9 +696,8 @@ Substitute in the equations for $A'$ and $A''$:
 $ R_(t t) = A ((2 C_1) / (2 r^3) + (-C_1) / (r^2 r)) = A (C_1 / r^3 - C_1 / r^3) = A dot 0 $
 $ R_(t t) = 0 $
 
-==== Ricci Tensor $R_(r r)$
+==== Ricci Tensor $R_(r r)$---Start with the equation we derived previously:
 
-Start with the equation we derived previously:
 $ R_(r r) = - (A'') / (2A) + (A' B') / (4 A B) + A'^2 / (4 A^2) + B' / (r B) $
 
 Substitute in $B'/B$ to get everything in terms of $A$ and its derivatives:
@@ -715,7 +713,7 @@ Notice that the term in parenthesis is zero as shown above in the $R_(t t)$ sect
 $ R_(r r) = -1/A dot 0 $
 $ R_(r r) = 0 $
 
-==== Ricci Tensor $R_(𝜃 𝜃)$ equals zero
+==== Ricci Tensor $R_(𝜃 𝜃)$---Equals zero
 
 Start with the equation we derived previously:
 $ R_(𝜃 𝜃) = -(r A') / (2 A B) + (r B') / (2 B^2) - 1 / B + 1 $
@@ -733,7 +731,7 @@ Simplify:
 $ R_(𝜃 𝜃) = -C_1 / r - 1 + C_1 / r + 1 $
 $ R_(𝜃 𝜃) = 0 $
 
-==== Ricci Tensor $R_(𝜑 𝜑)$ equals zero
+==== Ricci Tensor $R_(𝜑 𝜑)$----Equals zero
 
 Start with the equation we derived previously:
 $ R_(𝜑 𝜑) = sin^2 𝜃 ( -(r A') / (2 A B) + (r B') / (2 B^2) - 1/B + 1 ) $
