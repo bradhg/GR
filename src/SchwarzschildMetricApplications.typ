@@ -16,24 +16,38 @@ $
 & x_2^𝜇 (𝜏_2) &&= ( c t_2(𝜏_2), r_2, 𝜃_0, 𝜑_0 )
 $
 
-As was shown previously, applying the geodesic equation to the static metric leads to this expression for the time-like coordinate rate of change:
-#reShow(<eq:dt_dtau_B>)
+Solve for $(dd((c t))) / (dd(𝜏))$ of a motionless object using the Schwarzschild metric
 
-Now substitute in $B(r)$
+$ -c^2 dd(𝜏)^2 = g_(O𝜇 G𝜈) dd(x)^O𝜇 dd(x)^G𝜈 $
+#{
+    let (gRm, gRh, _) = makeVariants2( (i1,i2) => $g^(i1 i2) dd(x)^i1 dd(x)^i2$)
 
-#reShow(<eq:BSchwar>)
+    let (_, gD2h, _) = makeVariants2( (i1,i2) => $g^(i1 i2) (dd(x)^i1)^2$)
 
-to get:
+    $
+    -c^2 dd(𝜏)^2 &= gRm(𝜇,𝜈) \
+                 &= gRh(t,t) + gRh(r,r) + gRh(𝜃,𝜃) + gRh(𝜑,𝜑) \
+                 &= gD2h(t,t) + gD2h(r,r) + gD2h(𝜃,𝜃) + gD2h(𝜑,𝜑) \
+                 &= -f(r) (dd((c t)))^2 + f(r)^(-1) dd(r)^2 + r^2 dd(𝜃)^2 + r^2 sin^2 𝜃 dd(𝜑)^2
+     $
+}
 
-$ dv((c t), 𝜏) = c sqrt( 1 / (1 - (2 G M) / (c^2 r)) ) $
+Divide both sides by $dd(𝜏)^2$ and recall that in this case the positional derivatives are zero
+
+$ -c^2 = -f(r)(dd((c t)) / dd(𝜏))^2 + f(r)^(-1) cancel(((dd(r)) / (dd(𝜏)))^2) + r^2 cancel(((dd(𝜃)) / (dd(𝜏)))^2) + r^2 sin^2 𝜃 cancel(((dd(𝜑)) / (dd(𝜏)))^2) $
+
+
+
+$ (dd((c t))) / (dd(𝜏)) = c sqrt(f(r)^(-1)) $
+
 
 Divide both sides by the speed of light $c$ to get the rate of change of coordinate time $t$ with respect to proper time $𝜏$:
 
-$ dv(t, 𝜏) = 1 / sqrt(1 - (2 G M) / (c^2 r)) $
+$ dv(t, 𝜏) = 1 / sqrt(f(r)) $
 
 Inverting provides the rate of change of proper time with respect to coordinate time:
 
-$ dot(𝜏) = dv(𝜏, t) = sqrt(1 - (2 G M) / (c^2 r)) $
+$ dot(𝜏) = dv(𝜏, t) = sqrt(f(r)) $
 
 Given a coordinate time interval $𝛥 t$, we can compute the proper time interval $𝛥 𝜏$:
 
@@ -55,27 +69,25 @@ $
 & &&= (dot(𝜏)_2 - dot(𝜏)_1) 𝛥 t \
 & &&= (dot(𝜏)_2 - dot(𝜏)_1) (𝛥 𝜏_1 / dot(𝜏)_1) \
 & &&= (dot(𝜏)_2 / dot(𝜏)_1 - 1) 𝛥 𝜏_1 \
-& &&= ( sqrt(1 - (2 G M) / (c^2 r_2)) / sqrt(1 - (2 G M) / (c^2 r_1)) - 1 ) 𝛥 𝜏_1 \
-& &&= ( sqrt( (1 - (2 G M) / (c^2 r_2)) / (1 - (2 G M) / (c^2 r_1)) ) - 1 ) 𝛥 𝜏_1
+& &&= ( sqrt(f(r_2)) / sqrt(f(r_1)) - 1 ) 𝛥 𝜏_1 \
+& &&= ( sqrt(f(r_2) / f(r_1)) - 1 ) 𝛥 𝜏_1 \
 $
 
-The Schwarzschild radius is defined as:
-$ R_s := (2 G M) / c^2 $
-It's the key scaling parameter in Schwarzschild geometry. We can use it to simplify the $𝛥 𝜏_(21)$ equation to the following:
-
-$ 𝛥 𝜏_(21) = ( sqrt( (1 - R_s/r_2) / (1 - R_s/r_1) ) - 1 ) 𝛥 𝜏_1 $
+$ 𝛥 𝜏_(21) = ( sqrt( (1 - r_s/r_2) / (1 - r_s/r_1) ) - 1 ) 𝛥 𝜏_1 $
 
 #let G = 6.67430e-11 // m^3 kg^-1 s-2
 #let c = 299792458 // m/s
+#let cSquared = c*c
 #let sunMass = 1.98847e30 // kg
 #let sunRadius = 695700000 // m
 #let earthMass = 5.97219e24 // kg
 #let earthRadius = 6.371e6 // m
 #let earthOrbitRadius = 149597870700 //m
 
-#let schwarzschildRadius(m) = (2 * G * m) / calc.pow(c, 2)
-#let schwarzschildFactor(m, r) = 1 - (schwarzschildRadius(m) / r)
-#let tauDotStationary(m, r) = calc.sqrt(schwarzschildFactor(m, r))
+
+#let schwarzschildRadius(mass) = (2 * G * mass) / cSquared
+#let schwarzschildFactor(mass, radius) = 1 - (schwarzschildRadius(mass) / radius)
+#let tauDotStationary(mass, radius) = calc.sqrt(schwarzschildFactor(mass, radius))
 #let deltaTau21(tauDot2, tauDot1, deltaTau1) = (tauDot2 / tauDot1 - 1) * deltaTau1
 
 //--------------------------------------------------------------------------------------------------

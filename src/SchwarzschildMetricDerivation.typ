@@ -36,7 +36,7 @@
         "others" &= 0
     $
 
-== The Christoffel Symbols
+== The Christoffel Symbols <section:christoffel_ansatz>
     
     Because this metric is diagonal the Christoffel Symbols equations simplifies to the following:
 
@@ -116,10 +116,9 @@
     }
     
     *$R_(t t)$* Complete
-        $
-        r_(t t) &= (A'B')/(2B^2) - (A'')/(2B) - 0 + (-A'^2)/(4A B) - (A'B')/(4B^2) + (-A')/(r B) -(-A'^2)/(2A  B) \
-                &= -(A'')/(2B) + (A'B')/(4B^2) + (A'^2)/(4A B) - (A')/(r B)
-        $
+       $   R_(t t) &= (A'B')/(2B^2) - (A'')/(2B) - 0 + (-A'^2)/(4A B) - (A'B')/(4B^2) + (-A')/(r B) -(-A'^2)/(2A  B) $
+       $ R_(t t) &= -(A'')/(2B) + (A'B')/(4B^2) + (A'^2)/(4A B) - (A')/(r B) $ <eq:Rtt_ansatz>
+
 
 
 === $R_(r r)$ Component of the Ricci Tensor
@@ -186,9 +185,9 @@
                 &- (-(A'^2)/(2A^2) + (A'')/(2A) - (B'^2)/(2B^2) + (B'')/(2B) - 2/(r^2)) \
                 &+ ((A'B')/(4A B) + (B'^2)/(4B^2) + (B')/(r B)) \
                 &- ((A'^2)/(4A^2) + (B'^2)/(4B^2) + 2/(r^2)) \
-                \
-                &= -(A'')/(2A) + (A'B')/(4A B) + (A'^2)/(4A^2) + (B')/(r B)
         $
+
+        $  R_(r r) &= -(A'')/(2A) + (A'B')/(4A B) + (A'^2)/(4A^2) + (B')/(r B) $  <eq:Rrr_ansatz>
 
 === $R_(𝜃 𝜃)$ Component of the Ricci Tensor
 
@@ -249,14 +248,14 @@
 
     *$R_(𝜃 𝜃)$* Complete
         $
-        r_(𝜃 𝜃) &= (r B')/(B^2) - 1/B \
+        R_(𝜃 𝜃) &= (r B')/(B^2) - 1/B \
                 &- (-csc^2(𝜃)) \
                 &+ (-(r A')/(2A B) - (r B')/(2B^2) - 2/B) \
                 &- (-2/B + cot^2 𝜃 ) \
                 \
-                &= -(r A')/(2A B) + (r B')/(2B^2) - 1/B + csc^2 𝜃 - cot^2 𝜃 \
-                &= -(r A')/(2A B) + (r B')/(2B^2) - 1/B + 1
-        $
+                &= -(r A')/(2A B) + (r B')/(2B^2) - 1/B + csc^2 𝜃 - cot^2 𝜃 $
+
+        $ R_(𝜃 𝜃) = -(r A')/(2A B) + (r B')/(2B^2) - 1/B + 1  $ <eq:R𝜃𝜃_ansatz>
 
 === $R_(𝜑 𝜑)$ Component of the Ricci Tensor
 
@@ -317,14 +316,15 @@
 
     *$R_(𝜑 𝜑)$* Complete
         $
-        r_(𝜑 𝜑) &= (-(sin^2 𝜃)/B + (r sin^2 𝜃 B')/B^2 + sin^2 𝜃 - cos^2 𝜃) \
+        R_(𝜑 𝜑) &= (-(sin^2 𝜃)/B + (r sin^2 𝜃 B')/B^2 + sin^2 𝜃 - cos^2 𝜃) \
                 &- 0 \
                 &+ (-(r sin^2 𝜃 A')/(2 A B) - (r sin^2 𝜃 B')/(2 B^2) - (2 sin^2 𝜃)/B - cos^2 𝜃) \
                 &- (-(2 sin^2 𝜃)/B - 2 cos^2 𝜃) \
                 \
                 &= -(r sin^2 𝜃 A')/(2 A B) + (r sin^2 𝜃 B')/(2 B^2) - (sin^2 𝜃)/B + sin^2 𝜃 \
-                &= sin^2 𝜃 ( -(r A')/(2 A B) + (r B')/(2 B^2) - 1/B + 1 )
         $
+
+        $ R_(𝜑 𝜑) &= sin^2 𝜃 ( -(r A')/(2 A B) + (r B')/(2 B^2) - 1/B + 1 ) $ <eq:R𝜑𝜑_ansatz>
 
 === The Ricci Tensor
 
@@ -341,6 +341,7 @@
 
     In the normal derivation of the Schwarzschild metric, at this point the fact that the Ricci Tensor is all zeros is used.
     However, I could not convince myself of the truth of that statement, so I decided to continue without it.
+    Later in @section:ricciIsZero I will show that it is.
 
 === The Ricci scalar #{
 
@@ -505,8 +506,18 @@ $ u^𝜇 = ( (dd((c t))) / (dd(𝜏)), 0, 0, 0 ) $
 Solve for $(dd((c t))) / (dd(𝜏))$ of a motionless object using the Schwarzschild metric
 
 $ -c^2 dd(𝜏)^2 = g_(O𝜇 G𝜈) dd(x)^O𝜇 dd(x)^G𝜈 $
-// Todo: add a expanded highligh of the metric and derivatives
-$ -c^2 dd(𝜏)^2 = A (dd((c t)))^2 + B dd(r)^2 + r^2 dd(𝜃)^2 + r^2 sin^2 𝜃 dd(𝜑) $
+#{
+    let (gRm, gRh, _) = makeVariants2( (i1,i2) => $g^(i1 i2) dd(x)^i1 dd(x)^i2$)
+
+    let (_, gD2h, _) = makeVariants2( (i1,i2) => $g^(i1 i2) (dd(x)^i1)^2$)
+
+    $
+    -c^2 dd(𝜏)^2 &= gRm(𝜇,𝜈) \
+                 &= gRh(t,t) + gRh(r,r) + gRh(𝜃,𝜃) + gRh(𝜑,𝜑) \
+                 &= gD2h(t,t) + gD2h(r,r) + gD2h(𝜃,𝜃) + gD2h(𝜑,𝜑) \
+                 &= A (dd((c t)))^2 + B dd(r)^2 + r^2 dd(𝜃)^2 + r^2 sin^2 𝜃 dd(𝜑)^2
+     $
+}
 
 divide both sides by $dd(𝜏)^2$ and recall that in this case the positional derivatives are zero
 
@@ -624,120 +635,118 @@ $ g_(𝜇 𝜈) = diag4(
     r^2 sin^2 𝜃
 ) $
 
+The Schwarzschild Radius $r_s$ is defined as:
+$ r_s := (2 G M) / c^2 $
+
+It is the key scaling parameter in Schwarzschild geometry. It is used to define the Metric function $f(r)$:
+$ f(r) := 1 - r_s/r $
+
+With these defenitions the Schwarzschild Metric can be rewritten as:
+
+$ g_(𝜇 𝜈) = diag4(
+    -f(r),
+    1 / f(r),
+    r^2,
+    r^2 sin^2 𝜃
+) $
+
+
+
+
 === The Christoffel Symbols
 
-$ B = -1/A $
-$ B' = A' / A^2 $
-
-Use the above to eliminate $B$ and $B'$ from these Christoffel Symbols.
-
-$ 𝛤^r_(t t) &= (-A') / (2B) = (A A') / 2 \
-  𝛤^r_(r r) &= B' / (2B)   = (A' / A^2) / (2 (-1/A)) = (-A') / (2A) \
-  𝛤^r_(𝜃 𝜃) &= -r / B      = A r \
-  𝛤^r_(𝜑 𝜑) &= (-r sin^2 𝜃) / B = A r sin^2 𝜃 $
-
-And then substitute,
-
-$ A = -(1 - (2 G M) / (c^2 r)) \
-  A' = (-2 G M) / (c^2 r^2) $
-
-into the Christoffel Symbols and do a little simplification and reordering:
-
-$ 𝛤^t_(t r) = 𝛤^t_(r t) = A' / (2A) = ( (-2 G M) / (c^2 r^2) ) / (2 [-(1 - (2 G M) / (c^2 r))]) = (G M) / r^2 ( 1 / (c^2 (1 - (2 G M) / (c^2 r))) ) $
-
-$ 𝛤^r_(t t) = (A A') / 2 = (- (1 - (2 G M) / (c^2 r)) ( (-2 G M) / (c^2 r^2) )) / 2 = (G M) / r^2 ( (1 - (2 G M) / (c^2 r)) / c^2 ) $
-
-$ 𝛤^r_(r r) = (-A') / (2A) = -𝛤^t_(t r) = -(G M) / r^2 ( 1 / (c^2 (1 - (2 G M) / (c^2 r))) ) $
-
-$ 𝛤^r_(𝜃 𝜃) = A r = -(1 - (2 G M) / (c^2 r)) r = -r (1 - (2 G M) / (c^2 r)) $
-
-$ 𝛤^r_(𝜑 𝜑) = A r sin^2 𝜃 = -(1 - (2 G M) / (c^2 r)) r sin^2 𝜃 = -r sin^2 𝜃 (1 - (2 G M) / (c^2 r)) $
-
-Finally here are the Schwarzschild Christoffel symbols:
+$A$ and $B$ and their derivatives can be written in terms of the Metric function $f$.
 
 $
-  𝛤^t_(t r) = 𝛤^t_(r t) &= && (G M) / r^2 ( 1 / (c^2 (1 - (2 G M) / (c^2 r))) ) \
-  𝛤^r_(t t)            &= && (G M) / r^2 ( (1 - (2 G M) / (c^2 r)) / c^2 ) \
-  𝛤^r_(r r)            &= - && (G M) / r^2 ( 1 / (c^2 (1 - (2 G M) / (c^2 r))) ) \
-  𝛤^r_(𝜃 𝜃)            &= - && r (1 - (2 G M) / (c^2 r)) \
-  𝛤^r_(𝜑 𝜑)            &= - && r sin^2 𝜃 (1 - (2 G M) / (c^2 r)) \
-  𝛤^𝜃_(𝜃 r) = 𝛤^𝜃_(r 𝜃) &= && 1/r \
-  𝛤^𝜃_(𝜑 𝜑)            &= - && sin 𝜃 cos 𝜃 \
-  𝛤^𝜑_(𝜑 r) = 𝛤^𝜑_(r 𝜑) &= && 1/r \
-  𝛤^𝜑_(𝜑 𝜃) = 𝛤^𝜑_(𝜃 𝜑) &= && cot 𝜃
+  A  &= -f   \
+  A' &= -f'  \
+  A'' &= -f''
+  B  &= f^(-1)  \
+  B' &= -f^(-2) f'   \
 $
-=== The Ricci Tensor is Zero
 
-Previously, I noted that the Ricci tensor is zero, but I was not yet convinced of that fact. We will now use the following relationships to show that it is indeed equal to zero.
+Use the above to eliminate $A$ and $B$ from the Christoffel Symbols as derived in @section:christoffel_ansatz
 
-$ B = -1/A $
-$ B' = A' / A^2 $
-$ A = -(1 - C_1/r) $
-$ A' = -C_1 / r^2 $
-$ A'' = (2 C_1) / r^3 $
+$𝛤^t_(t r) = 𝛤^t_(r t) &= A' / (2A) = (-f')/(2(-f)) = f'/2 f^(-1)   \
+              𝛤^r_(t t) &= (-A') / (2B) = f'/(2f^(-1)) = f'/2 f   \
+              𝛤^r_(r r) &= B' / (2B)   = (-f^(-2) f')/(2f^(-1)) = -f'/2 f^(-1)   \
+              𝛤^r_(𝜃 𝜃) &= -r / B      = -r / f^(-1) = -r f  \
+              𝛤^r_(𝜑 𝜑) &= (-r sin^2 𝜃) / B = (-r sin^2 𝜃) /f^(-1) = -r sin^2 𝜃 f$
+
+#block(sticky: true)[
+The Christoffel Symbols can now be written in terms of the Metric function, the Swarzchild Radius, or the Mass and fundemental contants.
+The Christoffel Symbols that do not depend on the Metric function have been restated here for completness.
+]
+$
+  //                  R  L            R   L        R L           R   L                R L                 R   L
+  𝛤^t_(t r) = 𝛤^t_(r t) &=&        f'/2 & f^(-1)  &=&&  r_s/(2r^2) &(1 - r_s/r)^(-1) &=&&   (G M)/(c^2 r^2) &(1 - (2G M)/(c^2 r))^(-1)   \
+              𝛤^r_(t t) &=&        f'/2 & f       &=&&  r_s/(2r^2) &(1 - r_s/r)      &=&&   (G M)/(c^2 r^2) &(1 - (2G M)/(c^2 r))       \
+              𝛤^r_(r r) &=&       -f'/2 & f^(-1)  &=&& -r_s/(2r^2) &(1 - r_s/r)^(-1) &=&&  -(G M)/(c^2 r^2) &(1 - (2G M)/(c^2 r))^(-1)  \
+              𝛤^r_(𝜃 𝜃) &=&          -r & f       &=&&          -r &(1 - r_s/r)      &=&&                -r &(1 - (2G M)/(c^2 r))       \
+              𝛤^r_(𝜑 𝜑) &=&  -r sin^2 𝜃 & f       &=&& -r sin^2 𝜃 &(1 - r_s/r)       &=&&        -r sin^2 𝜃 &(1 - (2G M)/(c^2 r))        \
+  𝛤^𝜃_(𝜃 r) = 𝛤^𝜃_(r 𝜃) &=&  1/r \
+              𝛤^𝜃_(𝜑 𝜑) &=& -sin 𝜃 cos 𝜃 \
+  𝛤^𝜑_(𝜑 r) = 𝛤^𝜑_(r 𝜑) &=& 1/r \
+  𝛤^𝜑_(𝜑 𝜃) = 𝛤^𝜑_(𝜃 𝜑) &=& cot 𝜃
+$
+=== The Ricci Tensor is Zero <section:ricciIsZero>
+
+Previously, I noted that the Ricci tensor is zero, but I was not yet convinced of that fact.
 
 ==== Ricci Tensor $R_(t t)$---Start with the equation we derived previously:
+#reShow( <eq:Rtt_ansatz> )
 
-$ R_(t t) = - (A'') / (2B) + (A' B') / (4B^2) + (A'^2) / (4A B) - (A') / (r B) $
+Replace $A$ and $B$ and their derivatives with $f$ and its derivative.
 
-Substitute in $B$ and $B'$ to get everything in terms of $A$ and its derivatives:
-$ R_(t t) = (A A'') / 2 + (A^2 A'^2) / (4 A^2) - (A A'^2) / (4 A) + (A A') / r $
+$ R_(t t) &= -(-f'')/(2 f^(-1)) + ((-f')(-f^(-2) f'))/(4(f^(-1))^2) + (-f'^2)/(4 (-f) (f^(-1))) - (-f')/(r (f^(-1))) $
+Simplify
+$ R_(t t) = (f'')/(2 f^(-1)) - (f'^2)/4 + (f'^2)/4 + (f')/(r (f^(-1))) $
+Elimate the middle terms and factor out an $f$
+$ R_(t t) = (f''/2 + f'/r)f $
 
-Cancel the $A$s in the middle terms:
-$ R_(t t) = (A A'') / 2 + A'^2 / 4 - A'^2 / 4 + (A A') / r $
+The first and second derivatives of the metric function are $f'= r_s slash r^2$ and $f''= -2 r_s slash r^3$.
+Substituting these into the above gives:
 
-Eliminate the middle terms because they are equal and opposite:
-$ R_(t t) = (A A'') / 2 + (A A') / r $
+$ R_(t t) = (-r_s/r^3 + r_s/r^3)f = 0 $
 
-Factor out an $A$:
-$ R_(t t) = A ((A'') / 2 + A' / r) $
-
-Substitute in the equations for $A'$ and $A''$:
-$ R_(t t) = A ((2 C_1) / (2 r^3) + (-C_1) / (r^2 r)) = A (C_1 / r^3 - C_1 / r^3) = A dot 0 $
-$ R_(t t) = 0 $
 
 ==== Ricci Tensor $R_(r r)$---Start with the equation we derived previously:
+#reShow( <eq:Rrr_ansatz> )
 
-$ R_(r r) = - (A'') / (2A) + (A' B') / (4 A B) + A'^2 / (4 A^2) + B' / (r B) $
+Rewrite in terms of $f$ and simplify
 
-Substitute in $B'/B$ to get everything in terms of $A$ and its derivatives:
-$ R_(r r) = -(A'') / (2A) - A'^2 / (4 A^2) + A'^2 / (4 A^2) - A' / (r A) $
+$  R_(r r) &= -(-f'')/(2(-f)) + ((-f')(-f^(-2)f'))/(4(-f) (f^(-1))) + ((-f')^2)/(4(-f)^2) + (-f^(-2)f')/(r (f^(-1))) \
+           &= -f''/(2f) - f'^2/(4 f^2) + f'^2/(4f^2) - f'/(r f) \
+           &= -(f''/2 + f'/r)1/f  \
+           &= (-r_s/r^3 + r_s/r^3)1/f \
+           &= -(0)1/f  \
+           &= 0
+   $
 
-Eliminate the middle terms because they are equal and opposite:
-$ R_(r r) = -(A'') / (2A) - A' / (r A) $
 
-Factor out a $-1/A$:
-$ R_(r r) = -1/A ((A'') / 2 + A' / r) $
+==== Ricci Tensor $R_(𝜃 𝜃)$---Start with the equation we derived previously:
+#reShow(<eq:R𝜃𝜃_ansatz>)
 
-Notice that the term in parenthesis is zero as shown above in the $R_(t t)$ section:
-$ R_(r r) = -1/A dot 0 $
-$ R_(r r) = 0 $
+Rewrite in terms of $f$ and simplify
 
-==== Ricci Tensor $R_(𝜃 𝜃)$---Equals zero
+$
+    R_(𝜃 𝜃) &= -(r (-f')) / (2 (-f)(f^(-1)) ) + (r (-f^(-2)f')) / (2 (f^(-1))^2) - 1 / (f^(-1)) + 1 \
+            &= -(r f')/2 - (r f')/2 - f + 1 \
+            &= -r f' - f + 1 \
+            &= -r (r_s/r^2) - (1 - r_s/r ) + 1 \
+            &= -r_s/r - 1 + r_s/r + 1 \
+            &= 0 \
+ $
 
-Start with the equation we derived previously:
-$ R_(𝜃 𝜃) = -(r A') / (2 A B) + (r B') / (2 B^2) - 1 / B + 1 $
+==== Ricci Tensor $R_(𝜑 𝜑)$---Start with the equation we derived previously:
+#reShow(<eq:R𝜑𝜑_ansatz>)
 
-Substitute in $B$ and $B'/B$ to get everything in terms of $A$ and its derivatives:
-$ R_(𝜃 𝜃) = (r A A') / (2 A) + (r A A') / (2 A) + A + 1 $
-
-Simplify:
-$ R_(𝜃 𝜃) = r A' + A + 1 $
-
-Substitute in $A'$ and $A$:
-$ R_(𝜃 𝜃) = r ((-C_1) / r^2) - (1 - C_1/r) + 1 $
-
-Simplify:
-$ R_(𝜃 𝜃) = -C_1 / r - 1 + C_1 / r + 1 $
-$ R_(𝜃 𝜃) = 0 $
-
-==== Ricci Tensor $R_(𝜑 𝜑)$----Equals zero
-
-Start with the equation we derived previously:
-$ R_(𝜑 𝜑) = sin^2 𝜃 ( -(r A') / (2 A B) + (r B') / (2 B^2) - 1/B + 1 ) $
 
 Note that the term in parentheses equals $R_(𝜃 𝜃)$:
-$ R_(𝜑 𝜑) = sin^2 𝜃 (R_(𝜃 𝜃)) = sin^2 𝜃 dot 0 $
-$ R_(𝜑 𝜑) = 0 $
+$
+    R_(𝜑 𝜑) &= sin^2 𝜃 (R_(𝜃 𝜃)) \
+            &= sin^2 𝜃 ( 0 ) \
+            &= 0
+$
 
-This shows that for the Schwarzschild Metric the Ricci Tensor is zero. Which also means that the Ricci scalar is zero.
+==== Ricci Tensor is Zero---The above have shown that for the Schwarzschild Metric all of the components of the Ricci Tensor are zero. Which also means that the Ricci scalar is zero.
